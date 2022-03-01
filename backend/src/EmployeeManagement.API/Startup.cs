@@ -23,19 +23,15 @@ namespace EmployeeManagement.API
         public bool IsDevelopment { get; set; }
         public IConfiguration Configuration { get; }
 
-        public Startup()
+        public Startup(IConfiguration configuration)
         {
+            Configuration = configuration;
+
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
             IsProduction = environment == Environments.Production;
             IsStaging = environment == Environments.Staging;
             IsDevelopment = environment == Environments.Development;
-        }
-
-        public Startup(IConfiguration configuration)
-            :this()
-        {
-            Configuration = configuration;
         }
 
 
