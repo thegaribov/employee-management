@@ -9,15 +9,15 @@ WORKDIR /src
 COPY ["EmployeeManagement.Core/EmployeeManagement.Core.csproj", "EmployeeManagement.Core/"]
 COPY ["EmployeeManagement.DataAccess/EmployeeManagement.DataAccess.csproj", "EmployeeManagement.DataAccess/"]
 COPY ["EmployeeManagement.Service/EmployeeManagement.Service.csproj", "EmployeeManagement.Service/"]
-COPY ["EmployeeManagement.Presentation/EmployeeManagement.Presentation.csproj", "EmployeeManagement.Presentation/"]
-RUN dotnet restore "EmployeeManagement.Presentation/EmployeeManagement.Presentation.csproj"
+COPY ["EmployeeManagement.API/EmployeeManagement.API.csproj", "EmployeeManagement.API/"]
+RUN dotnet restore "EmployeeManagement.API/EmployeeManagement.API.csproj"
 
 COPY . .
-WORKDIR "/src/EmployeeManagement.Presentation" 
-RUN dotnet build "EmployeeManagement.Presentation.csproj" -c Release -o /app/build
+WORKDIR "/src/EmployeeManagement.API" 
+RUN dotnet build "EmployeeManagement.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "EmployeeManagement.Presentation.csproj" -c Release -o /app/publish
+RUN dotnet publish "EmployeeManagement.API.csproj" -c Release -o /app/publish
 
 FROM base AS final
 
@@ -27,4 +27,4 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "EmployeeManagement.Presentation.dll"]
+ENTRYPOINT ["dotnet", "EmployeeManagement.API.dll"]
