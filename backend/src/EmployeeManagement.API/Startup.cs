@@ -1,3 +1,4 @@
+using AutoMapper;
 using EmployeeManagement.DataAccess.Persistance.Contexts;
 using EmployeeManagement.DataAccess.UnitOfWork.Abstracts;
 using EmployeeManagement.DataAccess.UnitOfWork.Implementations;
@@ -16,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace EmployeeManagement.API
@@ -83,19 +85,27 @@ namespace EmployeeManagement.API
 
             #region Services
 
-            //unitOfWork
+            //Unit of work
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+
 
             //Business
             services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddTransient<IDepartmentService, DepartmentService>();
 
-            #endregion
 
+            //Mappers
+            services.AddAutoMapper(Assembly.Load("EmployeeManagement.API"));
+
+            #endregion
+            
 
             #region FluentValidation
 
-            services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+            var dtoValidationsAssembly = "EmployeeManagement.Core";
+
+            services.AddFluentValidation(fv => 
+                    fv.RegisterValidatorsFromAssembly(Assembly.Load(dtoValidationsAssembly)));
 
             #endregion
 
