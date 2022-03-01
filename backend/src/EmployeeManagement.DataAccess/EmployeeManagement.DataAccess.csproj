@@ -7,8 +7,6 @@
   <ItemGroup>
     <Folder Include="Persistance\Configurations\" />
     <Folder Include="Persistance\Seeding\" />
-    <Folder Include="UnitOfWork\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
   <ItemGroup>

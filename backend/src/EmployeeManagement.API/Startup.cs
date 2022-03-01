@@ -1,4 +1,6 @@
 using EmployeeManagement.DataAccess.Persistance.Contexts;
+using EmployeeManagement.DataAccess.UnitOfWork.Abstracts;
+using EmployeeManagement.DataAccess.UnitOfWork.Implementations;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -80,9 +82,9 @@ namespace EmployeeManagement.API
             #region Services
 
             //unitOfWork
-            //services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-           
+
             #endregion
 
 
