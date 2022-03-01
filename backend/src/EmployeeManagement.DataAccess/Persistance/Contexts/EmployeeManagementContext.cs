@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.Core.Common;
+using EmployeeManagement.Core.Enitities;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,6 +15,8 @@ namespace EmployeeManagement.DataAccess.Persistance.Contexts
     public class EmployeeManagementContext : DbContext, IDataProtectionKeyContext
     {
         public EmployeeManagementContext(DbContextOptions<EmployeeManagementContext> options) : base(options) { }
+
+        public DbSet<Employee> Employees { get; set; }
 
         //Data protection keys
         public DbSet<DataProtectionKey> DataProtectionKeys { get; set; }
