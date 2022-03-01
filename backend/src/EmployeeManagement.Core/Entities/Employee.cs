@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmployeeManagement.Core.Enitities
+namespace EmployeeManagement.Core.Entities
 {
     public class Employee : IEntity, ICreatedAt, IUpdatedAt
     {

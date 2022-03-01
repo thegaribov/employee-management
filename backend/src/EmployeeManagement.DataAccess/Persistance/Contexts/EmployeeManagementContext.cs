@@ -1,5 +1,5 @@
 ﻿using EmployeeManagement.Core.Common;
-using EmployeeManagement.Core.Enitities;
+using EmployeeManagement.Core.Entities;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
