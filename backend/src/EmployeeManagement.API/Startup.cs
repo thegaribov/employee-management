@@ -69,7 +69,7 @@ namespace EmployeeManagement.API
                     connectionString = @$"Server={serverName};Database={database};User={user};Password={password};";
                 }
 
-                option.UseSqlServer(connectionString, x => x.MigrationsAssembly("Data"));
+                option.UseSqlServer(connectionString, x => x.MigrationsAssembly("EmployeeManagement.DataAccess"));
             });
 
             #endregion
