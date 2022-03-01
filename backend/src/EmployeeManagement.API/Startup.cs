@@ -88,6 +88,7 @@ namespace EmployeeManagement.API
 
             //Business
             services.AddTransient<IEmployeeService, EmployeeService>();
+            services.AddTransient<IDepartmentService, DepartmentService>();
 
             #endregion
 

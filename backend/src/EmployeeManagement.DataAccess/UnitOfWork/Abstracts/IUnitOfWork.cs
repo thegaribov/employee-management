@@ -10,6 +10,7 @@ namespace EmployeeManagement.DataAccess.UnitOfWork.Abstracts
     public interface IUnitOfWork
     {
         IEmployeeRepository Employees { get; }
+        IDepartmentRepository Departments { get; }
 
         Task CommitAsync();
     }

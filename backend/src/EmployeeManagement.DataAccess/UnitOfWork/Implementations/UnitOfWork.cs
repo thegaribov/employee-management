@@ -1,4 +1,6 @@
 ﻿using EmployeeManagement.DataAccess.Persistance.Contexts;
+using EmployeeManagement.DataAccess.Repositories.Abstracts;
+using EmployeeManagement.DataAccess.Repositories.Implementations;
 using EmployeeManagement.DataAccess.UnitOfWork.Abstracts;
 using System;
 using System.Collections.Generic;
@@ -17,8 +19,14 @@ namespace EmployeeManagement.DataAccess.UnitOfWork.Implementations
             _context = context;
         }
 
+        private IEmployeeRepository employee;
+        public IEmployeeRepository Employees => employee ??= new EmployeeRepository(_context);
 
-       
+
+        private IDepartmentRepository department;
+        public IDepartmentRepository Departments => department ??= new DepartmentRepository(_context);
+
+
         public async Task CommitAsync()
         {
             await _context.SaveChangesAsync();
