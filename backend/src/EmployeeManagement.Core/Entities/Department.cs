@@ -14,5 +14,7 @@ namespace EmployeeManagement.Core.Entities
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+
+        public ICollection<Employee> Employees { get; set; }
     }
 }

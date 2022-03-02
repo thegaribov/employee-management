@@ -37,6 +37,14 @@ namespace EmployeeManagement.DataAccess.Persistance.Configurations
 
             #endregion
 
+            #region Department
+
+            builder
+               .HasOne<Department>(employee => employee.Department)
+               .WithMany(department => department.Employees)
+               .HasForeignKey(employee => employee.DepartmentId);
+
+            #endregion
 
             builder
                 .ToTable("Employees");

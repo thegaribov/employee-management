@@ -13,6 +13,9 @@ namespace EmployeeManagement.Core.Entities
         public string Name { get; set; }
         public string Surname { get; set; }
 
+        public int DepartmentId { get; set; }
+        public Department Department { get; set; }
+
         public DateTime BirthDate { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
