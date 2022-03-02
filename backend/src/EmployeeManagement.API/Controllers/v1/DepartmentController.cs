@@ -53,7 +53,9 @@ namespace EmployeeManagement.API.Controllers.v1
             var department = await _departmentService.GetAsync(id);
             if (department == null) return NotFound();
 
-            return Ok(department);
+            var model = _mapper.Map<Department, DepartmentDTO>(department);
+
+            return Ok(model);
         }
 
         #endregion

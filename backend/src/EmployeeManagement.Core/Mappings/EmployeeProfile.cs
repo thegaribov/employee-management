@@ -4,24 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using EmployeeManagement.Core.DTOs.v1.Department;
+using EmployeeManagement.Core.DTOs.v1.Employee;
 using EmployeeManagement.Core.Entities;
 
 namespace EmployeeManagement.Core.Mappings
 {
-    public class DepartmentProfile : Profile
+    public class EmployeeProfile : Profile
     {
-        public DepartmentProfile()
+        public EmployeeProfile()
         {
-            CreateMap<CreateDepartmentDTO, Department>()
+            CreateMap<CreateEmployeeDTO, Employee>()
                 .ForMember(e => e.CreatedAt, o => o.Ignore())
                 .ForMember(e => e.UpdatedAt, o => o.Ignore());
 
-            CreateMap<UpdateDepartmentDTO, Department>()
+            CreateMap<UpdateEmployeeDTO, Employee>()
                 .ForMember(e => e.CreatedAt, o => o.Ignore())
                 .ForMember(e => e.UpdatedAt, o => o.Ignore());
 
-            CreateMap<Department, DepartmentDTO>();
+            CreateMap<Employee, EmployeeDTO>();
         }
     }
 }
