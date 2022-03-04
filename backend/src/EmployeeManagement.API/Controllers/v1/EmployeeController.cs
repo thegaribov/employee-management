@@ -41,10 +41,15 @@ namespace EmployeeManagement.API.Controllers.v1
         #region List
 
         [HttpGet(Name = "employee-list")]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(int? page, int? pageSize)
         {
             var employees = await _employeeService.GetAllAsync();
-            var model = _mapper.Map<List<Employee>, List<EmployeeDTO>>(employees);
+
+            var paginatedEmployees = await _employeeService.GetAllPaginatedAsync(page.GetValueOrDefault(1), pageSize.GetValueOrDefault(10));
+
+            Response.Headers.Add("X-Pagination", paginatedEmployees.ToJson());
+
+            var model = _mapper.Map<IEnumerable<Employee>, List<EmployeeDTO>>(paginatedEmployees.Data);
 
             return Ok(model);
         }

@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.Core.Common;
+using EmployeeManagement.Core.Pagination.Shared;
 using EmployeeManagement.DataAccess.Persistance.Contexts;
 using EmployeeManagement.DataAccess.Repositories.Abstracts.Base;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,17 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             return await _dbTable.ToListAsync();
         }
 
+        public async virtual Task<Paginator<TEntity>> GetAllPaginatedAsync(int page, int pageSize)
+        {
+            var paginator = PaginateQuery(_dbTable.AsQueryable(), page, pageSize);
+
+            var query = paginator.Query.ToQueryString();
+
+            paginator.Data = await paginator.Query.ToListAsync();
+
+            return paginator;
+        }
+
         public async virtual Task<TEntity> GetAsync(object id)
         {
             return await _dbTable.FindAsync(id);
@@ -47,5 +59,11 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
         {
             _dbTable.Remove(data);
         }
+
+        public Paginator<TEntity> PaginateQuery(IQueryable<TEntity> query, int page = 1, int pageSize = 10)
+        {
+            return new Paginator<TEntity>(query, page, pageSize);
+        }
+
     }
 }
