@@ -1,4 +1,5 @@
-﻿using EmployeeManagement.Core.Pagination.Shared;
+﻿using EmployeeManagement.Core.Entities;
+using EmployeeManagement.Core.Pagination.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,12 @@ namespace EmployeeManagement.Service.Business.Abstracts
 {
     public interface IEmployeeService
     {
-        Task<List<Core.Entities.Employee>> GetAllAsync();
-        Task<Paginator<Core.Entities.Employee>> GetAllPaginatedAsync(int page, int pageSize);
-        Task<Core.Entities.Employee> GetAsync(int id);
-        Task CreateAsync(Core.Entities.Employee employee);
-        Task UpdateAsync(Core.Entities.Employee employee);
-        Task DeleteAsync(Core.Entities.Employee employee);
+        Task<List<Employee>> GetAllAsync();
+        Task<Paginator<Employee>> GetAllPaginatedAsync(int page, int pageSize);
+        Task<List<Employee>> GetAllSortedAsync(string query);
+        Task<Employee> GetAsync(int id);
+        Task CreateAsync(Employee employee);
+        Task UpdateAsync(Employee employee);
+        Task DeleteAsync(Employee employee);
     }
 }

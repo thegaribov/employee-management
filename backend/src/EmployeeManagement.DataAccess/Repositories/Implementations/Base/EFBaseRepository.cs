@@ -1,11 +1,13 @@
 ﻿using EmployeeManagement.Core.Common;
 using EmployeeManagement.Core.Pagination.Shared;
+using EmployeeManagement.Core.Sorting;
 using EmployeeManagement.DataAccess.Persistance.Contexts;
 using EmployeeManagement.DataAccess.Repositories.Abstracts.Base;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,6 +39,19 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             paginator.Data = await paginator.Query.ToListAsync();
 
             return paginator;
+        }
+
+        public async virtual Task<List<TEntity>> GetAllSortedAsync(string query)
+        {
+            var sorter = new Sorter<TEntity>();
+            var sortQuery = sorter.GetSortQuery(query);
+
+            if (!string.IsNullOrEmpty(sortQuery))
+            {
+                return await _dbTable.AsQueryable().OrderBy(sortQuery).ToListAsync();
+            }
+
+            return await GetAllAsync();
         }
 
         public async virtual Task<TEntity> GetAsync(object id)

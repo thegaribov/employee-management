@@ -3,6 +3,7 @@ using EmployeeManagement.Core.DTOs.v1.Department;
 using EmployeeManagement.Core.DTOs.v1.Employee;
 using EmployeeManagement.Core.Entities;
 using EmployeeManagement.Core.Extensions.ModelState;
+using EmployeeManagement.Core.Filters.Base;
 using EmployeeManagement.Service.Business.Abstracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,15 +42,18 @@ namespace EmployeeManagement.API.Controllers.v1
         #region List
 
         [HttpGet(Name = "employee-list")]
-        public async Task<IActionResult> List(int? page, int? pageSize)
+        public async Task<IActionResult> List([FromQuery] QueryParams queryParams)
         {
-            var employees = await _employeeService.GetAllAsync();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { Errors = ModelState.SerializeErrors() });
+            }
 
-            var paginatedEmployees = await _employeeService.GetAllPaginatedAsync(page.GetValueOrDefault(1), pageSize.GetValueOrDefault(10));
+            var sortedEmployees = await _employeeService.GetAllSortedAsync(queryParams.SortQuery);
 
-            Response.Headers.Add("X-Pagination", paginatedEmployees.ToJson());
+            //Response.Headers.Add("X-Pagination", paginatedEmployees.ToJson());
 
-            var model = _mapper.Map<IEnumerable<Employee>, List<EmployeeDTO>>(paginatedEmployees.Data);
+            var model = _mapper.Map<IEnumerable<Employee>, List<EmployeeDTO>>(sortedEmployees);
 
             return Ok(model);
         }

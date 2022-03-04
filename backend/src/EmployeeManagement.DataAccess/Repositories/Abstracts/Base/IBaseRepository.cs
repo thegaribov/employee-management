@@ -13,6 +13,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Abstracts.Base
     {
         Task<List<TEntity>> GetAllAsync();
         Task<Paginator<TEntity>> GetAllPaginatedAsync(int page, int pageSize);
+        Task<List<TEntity>> GetAllSortedAsync(string query);
         Task<TEntity> GetAsync(object id);
         Task CreateAsync(TEntity data);
         Task UpdateAsync(TEntity data);

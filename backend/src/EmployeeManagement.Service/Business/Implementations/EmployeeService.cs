@@ -1,10 +1,8 @@
-﻿using EmployeeManagement.Core.Pagination.Shared;
+﻿using EmployeeManagement.Core.Entities;
+using EmployeeManagement.Core.Pagination.Shared;
 using EmployeeManagement.DataAccess.UnitOfWork.Abstracts;
 using EmployeeManagement.Service.Business.Abstracts;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EmployeeManagement.Service.Business.Implementations
@@ -17,18 +15,22 @@ namespace EmployeeManagement.Service.Business.Implementations
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<Core.Entities.Employee>> GetAllAsync()
+        public async Task<List<Employee>> GetAllAsync()
         {
             return await _unitOfWork.Employees.GetAllAsync();
         }
 
-        public async Task<Paginator<Core.Entities.Employee>> GetAllPaginatedAsync(int page, int pageSize)
+        public async Task<Paginator<Employee>> GetAllPaginatedAsync(int page, int pageSize)
         {
             return await _unitOfWork.Employees.GetAllPaginatedAsync(page, pageSize);
         }
 
+        public async Task<List<Employee>> GetAllSortedAsync(string query)
+        {
+            return await _unitOfWork.Employees.GetAllSortedAsync(query);
+        }
 
-        public async Task<Core.Entities.Employee> GetAsync(int id)
+        public async Task<Employee> GetAsync(int id)
         {
             return await _unitOfWork.Employees.GetAsync(id);
         }
@@ -50,6 +52,5 @@ namespace EmployeeManagement.Service.Business.Implementations
             await _unitOfWork.Employees.DeleteAsync(ticket);
             await _unitOfWork.CommitAsync();
         }
-
     }
 }
