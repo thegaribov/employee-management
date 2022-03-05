@@ -55,13 +55,13 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
 
                 if (!string.IsNullOrEmpty(sortQuery))
                 {
-                    paginator.Query = paginator.Query.OrderBy(sortQuery);
+                    paginator.QuerySet = paginator.QuerySet.OrderBy(sortQuery);
                 }
             }
 
-            var resultQuery = paginator.Query.ToQueryString();
+            var resultQuery = paginator.QuerySet.ToQueryString();
 
-            paginator.Data = await paginator.Query.ToListAsync();
+            paginator.Data = await paginator.QuerySet.ToListAsync();
      
             return paginator;
         }
@@ -69,7 +69,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
         public async virtual Task<Paginator<TEntity>> GetAllPaginatedAsync(int page, int pageSize)
         {
             var paginator = new Paginator<TEntity>(_dbTable.AsQueryable(), page, pageSize);
-            paginator.Data = await paginator.Query.ToListAsync();
+            paginator.Data = await paginator.QuerySet.ToListAsync();
 
             return paginator;
         }
