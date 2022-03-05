@@ -5,6 +5,7 @@ using EmployeeManagement.DataAccess.UnitOfWork.Implementations;
 using EmployeeManagement.Service.Business.Abstracts;
 using EmployeeManagement.Service.Business.Implementations;
 using FluentValidation.AspNetCore;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -134,7 +135,7 @@ namespace EmployeeManagement.API
                 options.IncludeXmlComments(xmlPath);
             });
 
-
+            services.AddFluentValidationRulesToSwagger(); 
 
             #endregion
 
