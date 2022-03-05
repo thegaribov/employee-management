@@ -11,7 +11,7 @@ namespace EmployeeManagement.Core.Searching
     public class Searcher<TEntity>
          where TEntity : class, IEntity, new()
     {
-        public IEnumerable<string> GetPermittedProperties()
+        public IEnumerable<string> GetSearchablePropertyNames()
         {
             return typeof(TEntity)
                 .GetProperties()
@@ -19,18 +19,18 @@ namespace EmployeeManagement.Core.Searching
                 .Select(x => x.Name);
         }
 
-        public string GetQuery(string queryString)
+        public string GetQuery(string query)
         {
-            if (queryString != null)
+            if (query != null)
             {
                 var expressions = new List<string>();
-                var avaiableProperties = GetPermittedProperties();
-                var propertyExpression = string.Join(" + \" \"  + ", avaiableProperties);
-                var splittedQueries = queryString.Split(" ");
+                var searchablePropertyNames = GetSearchablePropertyNames();
+                var concantenatePropertiesExpression = string.Join(" + \" \"  + ", searchablePropertyNames);
+                var queries = query.Split(" ");
 
-                for (int i = 0; i < splittedQueries.Length; i++)
+                for (int i = 0; i < queries.Length; i++)
                 {
-                    expressions.Add($"({propertyExpression}).Contains(@{i})");
+                    expressions.Add($"({concantenatePropertiesExpression}).Contains(@{i})");
                 }
 
                 return string.Join(" and ", expressions);
