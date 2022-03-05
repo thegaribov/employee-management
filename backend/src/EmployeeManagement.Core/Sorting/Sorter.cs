@@ -11,7 +11,7 @@ namespace EmployeeManagement.Core.Sorting
     public class Sorter<TEntity>
          where TEntity : class, IEntity, new()
     {
-        public List<string> GetPermittedProperties()
+        public List<string> GetSortablePropertyNames()
         {
             return typeof(TEntity)
                .GetProperties()
@@ -20,31 +20,31 @@ namespace EmployeeManagement.Core.Sorting
                .ToList();
         }
 
-        public string GetQuery(string queryString)
+        public string GetQuery(string query)
         {
-            var resultOrderBys = new List<string>();
+            var sortQueries = new List<string>();
 
-            if (queryString != null)
+            if (query != null)
             {
-                var orderBys = queryString.ToLowerInvariant().Replace(" ", "").Split(",");
-                var avaiableProperties = GetPermittedProperties();
+                var queries = query.ToLowerInvariant().Replace(" ", "").Split(",");
+                var sortablePropertyNames = GetSortablePropertyNames();
 
-                var pattern = $"^({string.Join("|", avaiableProperties)})_(asc|desc)$";
+                var pattern = $"^({string.Join("|", sortablePropertyNames)})_(asc|desc)$";
 
                 Regex regex = new Regex(pattern);
 
 
-                foreach (var orderBy in orderBys)
+                foreach (var singleQuery in queries)
                 {
-                    if (regex.IsMatch(orderBy))
+                    if (regex.IsMatch(singleQuery))
                     {
-                        resultOrderBys.Add(orderBy.Replace("_", " "));
+                        sortQueries.Add(singleQuery.Replace("_", " "));
                     }
                 }
             }
 
 
-            return String.Join(",", resultOrderBys);
+            return String.Join(",", sortQueries);
         }
         
 
