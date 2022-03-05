@@ -2,6 +2,7 @@
 using EmployeeManagement.Core.DTOs.v1.Department;
 using EmployeeManagement.Core.Entities;
 using EmployeeManagement.Core.Extensions.ModelState;
+using EmployeeManagement.Core.Filters.Base;
 using EmployeeManagement.Service.Business.Abstracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,10 +36,18 @@ namespace EmployeeManagement.API.Controllers.v1
         #region List
 
         [HttpGet(Name = "department-list")]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List([FromQuery] QueryParams queryParams)
         {
-            var departments = await _departmentService.GetAllAsync();
-            var model = _mapper.Map<List<Department>, List<DepartmentDTO>>(departments);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { Errors = ModelState.SerializeErrors() });
+            }
+
+            var departments = await _departmentService.GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize);
+
+            Response.Headers.Add("X-Pagination", departments.ToJson());
+
+            var model = _mapper.Map<IEnumerable<Department>, List<DepartmentDTO>>(departments.Data);
 
             return Ok(model);
         }

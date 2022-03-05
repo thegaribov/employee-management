@@ -1,4 +1,5 @@
-﻿using EmployeeManagement.DataAccess.UnitOfWork.Abstracts;
+﻿using EmployeeManagement.Core.Pagination.Shared;
+using EmployeeManagement.DataAccess.UnitOfWork.Abstracts;
 using EmployeeManagement.Service.Business.Abstracts;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,11 @@ namespace EmployeeManagement.Service.Business.Implementations
         public async Task<List<Core.Entities.Department>> GetAllAsync()
         {
             return await _unitOfWork.Departments.GetAllAsync();
+        }
+
+        public async Task<Paginator<Core.Entities.Department>> GetAllSearchedPaginatedSortedAsync(string query, string sort, int? page, int? pageSize)
+        {
+            return await _unitOfWork.Departments.GetAllSearchedPaginatedSortedAsync(query, sort, page, pageSize);
         }
 
 
