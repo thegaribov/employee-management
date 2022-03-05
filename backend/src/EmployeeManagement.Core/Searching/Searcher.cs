@@ -11,46 +11,33 @@ namespace EmployeeManagement.Core.Searching
     public class Searcher<TEntity>
          where TEntity : class, IEntity, new()
     {
-        //public List<string> GetPermittedProperties()
-        //{
-        //    var entityType = typeof(TEntity);
-        //    var sortableProperties = new List<string>();
+        public IEnumerable<string> GetPermittedProperties()
+        {
+            return typeof(TEntity)
+                .GetProperties()
+                .Where(p => p.GetCustomAttributes(typeof(SearchableAttribute), true).FirstOrDefault() != null)
+                .Select(x => x.Name);
+        }
 
-        //    foreach (var entityProperty in entityType.GetProperties())
-        //    {
-        //        if (Attribute.IsDefined(entityProperty, typeof(SearchableAttribute)))
-        //        {
-        //            sortableProperties.Add(entityProperty.GetValue();
-        //        }
-        //    }
+        public string GetQuery(string queryString)
+        {
+            if (queryString != null)
+            {
+                var expressions = new List<string>();
+                var avaiableProperties = GetPermittedProperties();
+                var propertyExpression = string.Join(" + \" \"  + ", avaiableProperties);
+                var splittedQueries = queryString.Split(" ");
 
-        //    return sortableProperties;
-        //}
-        //public string GetSortQuery(string queryString)
-        //{
-        //    var resultOrderBys = new List<string>();
+                for (int i = 0; i < splittedQueries.Length; i++)
+                {
+                    expressions.Add($"({propertyExpression}).Contains(@{i})");
+                }
 
-        //    if (queryString != null)
-        //    {
-        //        var orderBys = queryString.ToLowerInvariant().Replace(" ", "").Split(",");
-        //        var avaiableProperties = GetPermittedProperties();
-
-        //        var pattern = $"^({string.Join("|", avaiableProperties)})_(asc|desc)$";
-
-        //        Regex regex = new Regex(pattern);
+                return string.Join(" and ", expressions);
+            }
 
 
-        //        foreach (var orderBy in orderBys)
-        //        {
-        //            if (regex.IsMatch(orderBy))
-        //            {
-        //                resultOrderBys.Add(orderBy.Replace("_", " "));
-        //            }
-        //        }
-        //    }
-
-
-        //    return String.Join(",", resultOrderBys);
-        //}
+            return String.Empty;
+        }
     }
 }

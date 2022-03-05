@@ -26,6 +26,10 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations
 
         public async virtual Task<List<Employee>> GetAllSearchedAsync(string query)
         {
+            if (string.IsNullOrEmpty(query))
+            {
+                return await GetAllAsync();
+            }
 
             var propertyNames = typeof(Employee)
                 .GetProperties()
@@ -34,9 +38,16 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations
 
             var result = string.Join(" + \" \"  + ", propertyNames);
 
-            var expression = $"({result}).Contains(@0) and ({result}).Contains(@1)";
+            var expressionList = new List<string>();
+            var queryList = query.Split(" ");
 
-            var resultquery = _context.Employees.Where(expression, query.Split(" ")).ToQueryString();
+            for (int i = 0; i < queryList.Length; i++)
+            {
+                expressionList.Add($"({result}).Contains(@{i})");
+            }
+
+            var expression = string.Join(" and ", expressionList);
+
 
             return await _context.Employees.Where(expression, query.Split(" ")).ToListAsync();
         }

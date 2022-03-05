@@ -1,5 +1,6 @@
 ﻿using EmployeeManagement.Core.Common;
 using EmployeeManagement.Core.Pagination.Shared;
+using EmployeeManagement.Core.Searching;
 using EmployeeManagement.Core.Sorting;
 using EmployeeManagement.DataAccess.Persistance.Contexts;
 using EmployeeManagement.DataAccess.Repositories.Abstracts.Base;
@@ -32,10 +33,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
 
         public async virtual Task<Paginator<TEntity>> GetAllPaginatedAsync(int page, int pageSize)
         {
-            var paginator = PaginateQuery(_dbTable.AsQueryable(), page, pageSize);
-
-            var query = paginator.Query.ToQueryString();
-
+            var paginator = new Paginator<TEntity>(_dbTable.AsQueryable(), page, pageSize);
             paginator.Data = await paginator.Query.ToListAsync();
 
             return paginator;
@@ -54,6 +52,18 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             return await GetAllAsync();
         }
 
+        public async virtual Task<List<TEntity>> GetAllSearchedAsync(string query)
+        {
+            var searcher = new Searcher<TEntity>();
+            var sortQuery = searcher.GetQuery(query);
+
+            if (!string.IsNullOrEmpty(sortQuery) && !string.IsNullOrEmpty(query))
+            {
+                return await _dbTable.AsQueryable().Where(sortQuery, query.Split(" ")).ToListAsync();
+            }
+
+            return await GetAllAsync();
+        }
 
         public async virtual Task<TEntity> GetAsync(object id)
         {
@@ -75,11 +85,5 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
         {
             _dbTable.Remove(data);
         }
-
-        public Paginator<TEntity> PaginateQuery(IQueryable<TEntity> query, int page = 1, int pageSize = 10)
-        {
-            return new Paginator<TEntity>(query, page, pageSize);
-        }
-
     }
 }
