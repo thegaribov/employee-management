@@ -12,6 +12,8 @@ namespace EmployeeManagement.DataAccess.Repositories.Abstracts.Base
         where TEntity : class, IEntity, new()
     {
         Task<List<TEntity>> GetAllAsync();
+        Task<Paginator<TEntity>> GetAllSearchedPaginatedSortedAsync(string query, string sort, int? page, int? pageSize);
+        Task<List<TEntity>> GetAllSearchedAsync(string query);
         Task<Paginator<TEntity>> GetAllPaginatedAsync(int page, int pageSize);
         Task<List<TEntity>> GetAllSortedAsync(string query);
         Task<TEntity> GetAsync(object id);

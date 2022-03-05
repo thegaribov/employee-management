@@ -10,7 +10,7 @@ namespace EmployeeManagement.Core.Filters.Base
     {
         public int? Page { get; set; }
         public int? PageSize { get; set; }
-        public string SortQuery { get; set; }
-        public string SearchQuery { get; set; }
+        public string Query { get; set; }
+        public string Sort { get; set; }
     }
 }

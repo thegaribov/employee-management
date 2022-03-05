@@ -20,6 +20,11 @@ namespace EmployeeManagement.Service.Business.Implementations
             return await _unitOfWork.Employees.GetAllAsync();
         }
 
+        public async Task<Paginator<Employee>> GetAllSearchedPaginatedSortedAsync(string query, string sort, int? page, int? pageSize)
+        {
+            return await _unitOfWork.Employees.GetAllSearchedPaginatedSortedAsync(query, sort, page, pageSize);
+        }
+
         public async Task<Paginator<Employee>> GetAllPaginatedAsync(int page, int pageSize)
         {
             return await _unitOfWork.Employees.GetAllPaginatedAsync(page, pageSize);

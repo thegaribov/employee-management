@@ -49,11 +49,11 @@ namespace EmployeeManagement.API.Controllers.v1
                 return BadRequest(new { Errors = ModelState.SerializeErrors() });
             }
 
-            var searchResult = await _employeeService.GetAllSearchedAsync(queryParams.SearchQuery);
+            var employees = await _employeeService.GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize);
 
-            //Response.Headers.Add("X-Pagination", paginatedEmployees.ToJson());
+            Response.Headers.Add("X-Pagination", employees.ToJson());
 
-            var model = _mapper.Map<IEnumerable<Employee>, List<EmployeeDTO>>(searchResult);
+            var model = _mapper.Map<IEnumerable<Employee>, List<EmployeeDTO>>(employees.Data);
 
             return Ok(model);
         }

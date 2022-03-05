@@ -25,9 +25,12 @@ namespace EmployeeManagement.Core.Pagination.Shared
         public bool HasPreviousPage { get; set; }
         public int? PreviousPage { get; set; }
 
+        public int TotalRecords { get; set; }
+
         public BasePaginator(int page, int pageSize, int recordsCount)
         {
             PageSize = pageSize;
+            TotalRecords = recordsCount;
 
             FirstPage = GetFirstPage();
             LastPage = GetLastPage(recordsCount, PageSize);

@@ -20,7 +20,7 @@ namespace EmployeeManagement.Core.Sorting
                .ToList();
         }
 
-        public string GetSortQuery(string queryString)
+        public string GetQuery(string queryString)
         {
             var resultOrderBys = new List<string>();
 
