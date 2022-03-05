@@ -13,6 +13,7 @@ namespace EmployeeManagement.Service.Business.Abstracts
         Task<List<Employee>> GetAllAsync();
         Task<Paginator<Employee>> GetAllPaginatedAsync(int page, int pageSize);
         Task<List<Employee>> GetAllSortedAsync(string query);
+        Task<List<Employee>> GetAllSearchedAsync(string query);
         Task<Employee> GetAsync(int id);
         Task CreateAsync(Employee employee);
         Task UpdateAsync(Employee employee);

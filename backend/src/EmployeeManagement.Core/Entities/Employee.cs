@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.Core.Common;
+using EmployeeManagement.Core.Searching;
 using EmployeeManagement.Core.Sorting;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,10 @@ namespace EmployeeManagement.Core.Entities
     {
         public int Id { get; set; }
 
-        [Sortable]
+        [Sortable, Searchable]
         public string Name { get; set; }
 
-        [Sortable]  
+        [Sortable, Searchable]  
         public string Surname { get; set; }
 
         [Sortable]

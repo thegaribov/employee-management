@@ -30,6 +30,11 @@ namespace EmployeeManagement.Service.Business.Implementations
             return await _unitOfWork.Employees.GetAllSortedAsync(query);
         }
 
+        public async Task<List<Employee>> GetAllSearchedAsync(string query)
+        {
+            return await _unitOfWork.Employees.GetAllSearchedAsync(query);
+        }
+
         public async Task<Employee> GetAsync(int id)
         {
             return await _unitOfWork.Employees.GetAsync(id);

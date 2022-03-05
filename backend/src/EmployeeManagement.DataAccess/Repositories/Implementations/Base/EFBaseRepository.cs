@@ -54,6 +54,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             return await GetAllAsync();
         }
 
+
         public async virtual Task<TEntity> GetAsync(object id)
         {
             return await _dbTable.FindAsync(id);

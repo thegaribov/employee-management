@@ -13,19 +13,13 @@ namespace EmployeeManagement.Core.Sorting
     {
         public List<string> GetPermittedProperties()
         {
-            var entityType = typeof(TEntity);
-            var sortableProperties = new List<string>();
-
-            foreach (var entityProperty in entityType.GetProperties())
-            {
-                if (Attribute.IsDefined(entityProperty, typeof(SortableAttribute)))
-                {
-                    sortableProperties.Add(entityProperty.Name.ToLowerInvariant());
-                }
-            }
-
-            return sortableProperties;
+            return typeof(TEntity)
+               .GetProperties()
+               .Where(p => p.GetCustomAttributes(typeof(SortableAttribute), true).FirstOrDefault() != null)
+               .Select(x => x.Name.ToLowerInvariant())
+               .ToList();
         }
+
         public string GetSortQuery(string queryString)
         {
             var resultOrderBys = new List<string>();
