@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EmployeeManagement.Core.Pagination.Shared;
+using FluentValidation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Core.Filters.Base
 {
-    
+
     public class QueryParams
     {
         /// <summary>
@@ -28,5 +30,28 @@ namespace EmployeeManagement.Core.Filters.Base
         /// Sort query
         /// </summary>
         public string Sort { get; set; }
+    }
+
+    public class QueryParamsValidator : AbstractValidator<QueryParams>
+    {
+        public QueryParamsValidator()
+        {
+            IntegrateRules();
+        }
+
+
+        private void IntegrateRules()
+        {
+            #region PageSize
+
+            RuleFor(queryParams => queryParams.PageSize)
+                .Cascade(CascadeMode.Stop)
+
+                .Must(qp => BasePaginator.AllowedPageSizes.Contains(qp.Value))
+                .WithMessage($"Page sizes can be : {string.Join(", ", BasePaginator.AllowedPageSizes)}")
+                .When(qp => qp.PageSize != null);
+
+            #endregion
+        }
     }
 }
