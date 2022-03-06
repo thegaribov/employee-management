@@ -124,7 +124,6 @@ namespace EmployeeManagement.API.Controllers.v1
         /// <response code="500">Server error</response>
         [ProducesResponseType(typeof(DepartmentDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(IDictionary<string, string[]>), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
         #endregion

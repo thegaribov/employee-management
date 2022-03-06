@@ -40,6 +40,7 @@ namespace EmployeeManagement.API.Controllers.v1
         #endregion
 
         #region List
+
         #region Documentation
 
         /// <summary>
@@ -85,6 +86,21 @@ namespace EmployeeManagement.API.Controllers.v1
 
         #region Details
 
+        #region Documentation
+
+        /// <summary>
+        /// Get details about specific employee
+        /// </summary>
+        /// <param name="id">Employee id</param>
+        /// <response code="200">Related employee info</response>
+        /// <response code="404">Requested resource not found</response>
+        /// <response code="500">Server error</response>
+        [ProducesResponseType(typeof(EmployeeDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        #endregion
+
         [HttpGet("{id:int}", Name = "employee-details")]
         public async Task<IActionResult> Details([FromRoute] int id)
         {
@@ -100,6 +116,22 @@ namespace EmployeeManagement.API.Controllers.v1
 
         #region Create
 
+        #region Documentation
+
+        /// <summary>
+        /// Create a new employee
+        /// </summary>
+        /// <response code="201">Employee created</response>
+        /// <response code="400">DTO is not valid</response>
+        /// <response code="404">Related department is not found</response>
+        /// <response code="500">Server error</response>
+        [ProducesResponseType(typeof(EmployeeDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(IDictionary<string, string[]>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        #endregion
+
         [HttpPost(Name = "employee-create")]
         public async Task<IActionResult> Create([FromBody] CreateEmployeeDTO model)
         {
@@ -114,7 +146,9 @@ namespace EmployeeManagement.API.Controllers.v1
             var newEmployee = _mapper.Map<CreateEmployeeDTO, Employee>(model);
             await _employeeService.CreateAsync(newEmployee);
 
-            return CreatedAtRoute("employee-details", new { Id = newEmployee.Id });
+            var employeeDTO = _mapper.Map<Employee, EmployeeDTO>(newEmployee);
+
+            return CreatedAtRoute("employee-details", new { Id = employeeDTO.Id }, employeeDTO);
         }
 
         #endregion

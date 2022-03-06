@@ -9,10 +9,24 @@ namespace EmployeeManagement.Core.DTOs.v1.Employee
 {
     public class CreateEmployeeDTO
     {
+        /// <summary>
+        /// Employee name
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Employee surname
+        /// </summary>
         public string Surname { get; set; }
 
+        /// <summary>
+        /// Related department id
+        /// </summary>
         public int DepartmentId { get; set; }
+
+        /// <summary>
+        /// Employee Birth date
+        /// </summary>
         public DateTime BirthDate { get; set; }
     }
 
