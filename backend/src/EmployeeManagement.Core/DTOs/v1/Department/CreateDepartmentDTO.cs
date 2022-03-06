@@ -9,6 +9,9 @@ namespace EmployeeManagement.Core.DTOs.v1.Department
 {
     public class CreateDepartmentDTO
     {
+        /// <summary>
+        /// Department name
+        /// </summary>
         public string Name { get; set; }
     }
 

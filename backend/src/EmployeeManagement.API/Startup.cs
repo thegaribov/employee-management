@@ -27,13 +27,17 @@ namespace EmployeeManagement.API
 {
     public class Startup
     {
+        public (string API, string Core, string DataAccess, string Service) AssemplyNames { get; set; }
         public bool IsProduction { get; set; }
         public bool IsStaging { get; set; }
         public bool IsDevelopment { get; set; }
         public IConfiguration Configuration { get; }
 
+
         public Startup(IConfiguration configuration)
         {
+            AssemplyNames = (API: "EmployeeManagement.API", Core: "EmployeeManagement.Core", DataAccess: "EmployeeManagement.DataAccess", Service: "EmployeeManagement.Service");
+
             Configuration = configuration;
 
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
@@ -83,7 +87,7 @@ namespace EmployeeManagement.API
                     connectionString = @$"Server={serverName};Database={database};User={user};Password={password};";
                 }
 
-                option.UseSqlServer(connectionString, x => x.MigrationsAssembly("EmployeeManagement.DataAccess"));
+                option.UseSqlServer(connectionString, x => x.MigrationsAssembly(AssemplyNames.DataAccess));
             });
 
             #endregion
@@ -130,18 +134,26 @@ namespace EmployeeManagement.API
                 });
 
                 // Set the comments path for the Swagger JSON and UI.
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                options.IncludeXmlComments(xmlPath);
+                //Collect all referenced projects output XML document file paths  
+                var currentAssembly = Assembly.GetExecutingAssembly();
+                var xmlDocs = currentAssembly.GetReferencedAssemblies()
+                    .Union(new AssemblyName[] { currentAssembly.GetName() })
+                    .Select(a => Path.Combine(Path.GetDirectoryName(currentAssembly.Location), $"{a.Name}.xml"))
+                    .Where(f => File.Exists(f)).ToArray();
+                
+                Array.ForEach(xmlDocs, (d) =>
+                {
+                    options.IncludeXmlComments(d);
+                });
             });
-
-            services.AddFluentValidationRulesToSwagger(); 
+            services.AddSwaggerGenNewtonsoftSupport();
+            services.AddFluentValidationRulesToSwagger();
 
             #endregion
 
             #region FluentValidation
 
-            var dtoValidationsAssembly = "EmployeeManagement.Core";
+            var dtoValidationsAssembly = AssemplyNames.Core;
 
             services.AddFluentValidation(fv => 
                     fv.RegisterValidatorsFromAssembly(Assembly.Load(dtoValidationsAssembly)));
@@ -166,13 +178,13 @@ namespace EmployeeManagement.API
 
             #region Swagger middleware
 
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            //// Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.)
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
                 c.RoutePrefix = string.Empty;
             });
 
