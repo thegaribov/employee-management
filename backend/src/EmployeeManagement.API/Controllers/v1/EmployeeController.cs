@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 namespace EmployeeManagement.API.Controllers.v1
 {
     [Produces("application/json")]
+    [Consumes("application/json")]
     [Route("api/v1/employees")]
     [ApiController]
     public class EmployeeController : ControllerBase
@@ -155,6 +156,23 @@ namespace EmployeeManagement.API.Controllers.v1
 
         #region Update
 
+        #region Documentation
+
+        /// <summary>
+        /// Update an employee
+        /// </summary>
+        /// <param name="id">Employee id</param>
+        /// <response code="204">Employee updated</response>
+        /// <response code="400">DTO is not valid</response>
+        /// <response code="404">Related department or employee is not found</response>
+        /// <response code="500">Server error</response>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(IDictionary<string, string[]>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        #endregion
+
         [HttpPut("{id:int}", Name = "employee-update")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateEmployeeDTO model)
         {
@@ -179,6 +197,21 @@ namespace EmployeeManagement.API.Controllers.v1
         #endregion
 
         #region Delete
+
+        #region Documentation
+
+        /// <summary>
+        /// Delete employee
+        /// </summary>
+        /// <param name="id">Employee id</param>
+        /// <response code="200">Employee deleted</response>
+        /// <response code="404">Employee is not found with specified id</response>
+        /// <response code="500">Server error</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        #endregion
 
         [HttpDelete("{id:int}", Name = "employee-delete")]
         public async Task<IActionResult> Delete([FromRoute] int id)

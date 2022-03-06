@@ -11,9 +11,6 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.API.Controllers.v1
 {
-    /// <summary>
-    /// Operations about department
-    /// </summary>
     [Produces("application/json")]
     [Consumes("application/json")]
     [Route("api/v1/departments")]
