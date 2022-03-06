@@ -40,6 +40,29 @@ namespace EmployeeManagement.API.Controllers.v1
         #endregion
 
         #region List
+        #region Documentation
+
+        /// <summary>
+        /// Returns avaiable employees. You can filter returned result by providing query string
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     /api/v1/employees
+        ///     /api/v1/employees?query=Mahmud Qaribov
+        ///     /api/v1/employees?page=2&amp;pageSize=15
+        ///     /api/v1/employees?sort=name_asc,surname_desc
+        ///     /api/v1/employees?query=Mahmud Qaribov&amp;page=2&amp;pageSize=15&amp;sort=name_asc,surname_desc
+        ///
+        /// </remarks>
+        /// <response code="200">Employees retrieved</response>
+        /// <response code="400">Paging, Searching, Sorting query string is not valid</response>
+        /// <response code="500">Server error</response>
+        [ProducesResponseType(typeof(IDictionary<string, string[]>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(List<EmployeeDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        #endregion
 
         [HttpGet(Name = "employee-list")]
         public async Task<IActionResult> List([FromQuery] QueryParams queryParams)
