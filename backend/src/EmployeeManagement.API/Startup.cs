@@ -1,4 +1,5 @@
 using AutoMapper;
+using EmployeeManagement.API.Middlewares;
 using EmployeeManagement.DataAccess.Persistance.Contexts;
 using EmployeeManagement.DataAccess.UnitOfWork.Abstracts;
 using EmployeeManagement.DataAccess.UnitOfWork.Implementations;
@@ -54,8 +55,6 @@ namespace EmployeeManagement.API
 
             services.AddDbContext<EmployeeManagementContext>(option =>
             {
-                var connectionString = Configuration.GetConnectionString("Database");
-
                 option.UseNpgsql(
                         Configuration.GetConnectionString("Database"),
                         npgsqlOptions =>
@@ -150,6 +149,10 @@ namespace EmployeeManagement.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseCustomExceptionHandler();
             }
 
             #region Swagger middleware
