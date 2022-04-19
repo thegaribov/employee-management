@@ -7,12 +7,14 @@ using EmployeeManagement.Service.Business.Abstracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace EmployeeManagement.API.Controllers.v1
 {
-    [Produces("application/json")]
-    [Consumes("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [Route("api/v1/departments")]
     [ApiController]
     public class DepartmentController : ControllerBase
