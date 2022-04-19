@@ -71,11 +71,6 @@ namespace EmployeeManagement.API.Controllers.v1
         [HttpGet(Name = "employee-list")]
         public async Task<IActionResult> List([FromQuery] QueryParams queryParams)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(new { Errors = ModelState.SerializeErrors() });
-            }
-
             var employees = await _employeeService.GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize);
 
             Response.Headers.Add("X-Pagination", employees.ToJson());
@@ -138,11 +133,6 @@ namespace EmployeeManagement.API.Controllers.v1
         [HttpPost(Name = "employee-create")]
         public async Task<IActionResult> Create([FromBody] CreateEmployeeDTO model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(new { Errors = ModelState.SerializeErrors() });
-            }
-
             var department = await _departmentService.GetAsync(model.DepartmentId);
             if (department == null) return NotFound();
 
@@ -178,11 +168,6 @@ namespace EmployeeManagement.API.Controllers.v1
         [HttpPut("{id:int}", Name = "employee-update")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateEmployeeDTO model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(new { Errors = ModelState.SerializeErrors() });
-            }
-
             var department = await _departmentService.GetAsync(model.DepartmentId);
             if (department == null) return NotFound();
 

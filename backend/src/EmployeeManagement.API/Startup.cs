@@ -1,5 +1,6 @@
 using AutoMapper;
 using EmployeeManagement.API.Middlewares;
+using EmployeeManagement.Core.Extensions.ModelState;
 using EmployeeManagement.DataAccess.Persistance.Contexts;
 using EmployeeManagement.DataAccess.UnitOfWork.Abstracts;
 using EmployeeManagement.DataAccess.UnitOfWork.Implementations;
@@ -45,11 +46,7 @@ namespace EmployeeManagement.API
                 .AddControllers()
                 .AddNewtonsoftJson(options =>
                      options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-                )
-                .ConfigureApiBehaviorOptions(options =>
-                {
-                    options.SuppressModelStateInvalidFilter = true;
-                });
+                );
 
             #region Database context
 
@@ -141,6 +138,12 @@ namespace EmployeeManagement.API
                 .PersistKeysToDbContext<EmployeeManagementContext>();
 
             #endregion
+
+            services.Configure<ApiBehaviorOptions>(o =>
+            {
+                o.InvalidModelStateResponseFactory = actionContext =>
+                    new BadRequestObjectResult(new { Errors = actionContext.ModelState.SerializeErrors() });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
