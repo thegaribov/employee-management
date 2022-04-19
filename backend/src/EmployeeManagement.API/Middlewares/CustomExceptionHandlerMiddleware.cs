@@ -52,7 +52,7 @@ namespace EmployeeManagement.API.Middlewares
             {
                 case ValidationException validationException:
                     code = HttpStatusCode.BadRequest;
-                    result = JsonConvert.SerializeObject(validationException.Failures);
+                    result = JsonConvert.SerializeObject(validationException.Errors);
                     break;
                 case BadRequestException badRequestException:
                     code = HttpStatusCode.BadRequest;
