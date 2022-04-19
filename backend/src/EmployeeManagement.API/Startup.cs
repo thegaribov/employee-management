@@ -28,23 +28,12 @@ namespace EmployeeManagement.API
     public class Startup
     {
         public (string API, string Core, string DataAccess, string Service) AssemplyNames { get; set; }
-        public bool IsProduction { get; set; }
-        public bool IsStaging { get; set; }
-        public bool IsDevelopment { get; set; }
         public IConfiguration Configuration { get; }
-
 
         public Startup(IConfiguration configuration)
         {
             AssemplyNames = (API: "EmployeeManagement.API", Core: "EmployeeManagement.Core", DataAccess: "EmployeeManagement.DataAccess", Service: "EmployeeManagement.Service");
-
             Configuration = configuration;
-
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
-            IsProduction = environment == Environments.Production;
-            IsStaging = environment == Environments.Staging;
-            IsDevelopment = environment == Environments.Development;
         }
 
 
@@ -61,33 +50,20 @@ namespace EmployeeManagement.API
                     options.SuppressModelStateInvalidFilter = true;
                 });
 
-
-
             #region Database context
 
             services.AddDbContext<EmployeeManagementContext>(option =>
             {
-                var connectionString = string.Empty;
+                var connectionString = Configuration.GetConnectionString("Database");
 
-                if (IsDevelopment)
-                {
-                    //Environment.GetEnvironmentVariable("CONNECTION_STRING_NAME")
-                    //Production
-
-                    connectionString = Configuration
-                           .GetConnectionString(Environment.GetEnvironmentVariable("CONNECTION_STRING_NAME"));
-                }
-                else
-                {
-                    string serverName = Environment.GetEnvironmentVariable("SQL_SERVER_NAME");
-                    string database = Environment.GetEnvironmentVariable("SQL_DATABASE");
-                    string user = Environment.GetEnvironmentVariable("SQL_USER");
-                    string password = Environment.GetEnvironmentVariable("SQL_PASSWORD");
-
-                    connectionString = @$"Server={serverName};Database={database};User={user};Password={password};";
-                }
-
-                option.UseSqlServer(connectionString, x => x.MigrationsAssembly(AssemplyNames.DataAccess));
+                option.UseNpgsql(
+                        Configuration.GetConnectionString("Database"),
+                        npgsqlOptions =>
+                        {
+                            npgsqlOptions.MigrationsAssembly(AssemplyNames.DataAccess);
+                            npgsqlOptions.UseNetTopologySuite();
+                        }
+                    );
             });
 
             #endregion

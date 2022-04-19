@@ -21,7 +21,6 @@ namespace EmployeeManagement.DataAccess.Persistance.Configurations
 
             #endregion
 
-
             builder
                 .ToTable("Departments");
         }
