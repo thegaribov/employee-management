@@ -1,6 +1,8 @@
 ﻿using EmployeeManagement.Core.Exceptions;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -15,11 +17,13 @@ namespace EmployeeManagement.API.Middlewares
     {
         private readonly ILogger _logger;
         private readonly RequestDelegate _next;
+        private readonly IWebHostEnvironment _env;
 
-        public CustomExceptionHandlerMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
+        public CustomExceptionHandlerMiddleware(RequestDelegate next, ILoggerFactory loggerFactory, IWebHostEnvironment env)
         {
             _next = next;
             _logger = loggerFactory.CreateLogger<CustomExceptionHandlerMiddleware>();
+            _env = env;
         }
 
         public async Task Invoke(HttpContext context)
@@ -91,7 +95,7 @@ namespace EmployeeManagement.API.Middlewares
             );
 
             var code = HttpStatusCode.InternalServerError;
-            var result = JsonConvert.SerializeObject("Internal server error happened.");
+            var result = JsonConvert.SerializeObject(_env.IsDevelopment() ? exception : "Internal server error happened.");
 
             context.Response.ContentType = MediaTypeNames.Application.Json;
             context.Response.StatusCode = (int)code;
