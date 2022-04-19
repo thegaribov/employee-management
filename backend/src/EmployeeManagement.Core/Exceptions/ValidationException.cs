@@ -12,14 +12,14 @@ namespace EmployeeManagement.Core.Exceptions
     {
         public IDictionary<string, string[]> Failures { get; }
 
-        public ValidationException() 
+        private ValidationException() 
             : base("Validation error occured")
         {
             Failures = new Dictionary<string, string[]>();
         }
 
-        public ValidationException(List<ValidationFailure> failures) 
-            : this()
+        public ValidationException(params ValidationFailure[] failures): this(failures.ToList()) { }
+        public ValidationException(List<ValidationFailure> failures) : this()
         {
             var propertyNames = failures
                 .Select(e => e.PropertyName)
@@ -36,6 +36,10 @@ namespace EmployeeManagement.Core.Exceptions
             }
         }
 
-        
+        public ValidationException(string property, string message) : this()
+        {
+            Failures.Add(property, new string[]{ message });
+        }
+        public ValidationException(string message)  : this("*", message) { }
     }
 }
