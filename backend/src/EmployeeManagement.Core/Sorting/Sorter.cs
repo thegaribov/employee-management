@@ -22,12 +22,13 @@ namespace EmployeeManagement.Core.Sorting
 
         public string GetQuery(string query)
         {
+            var sortablePropertyNames = GetSortablePropertyNames();
             var sortQueries = new List<string>();
 
-            if (query != null)
+            if (query != null && sortablePropertyNames.Any())
             {
                 var queries = query.ToLowerInvariant().Replace(" ", "").Split(",");
-                var sortablePropertyNames = GetSortablePropertyNames();
+               
 
                 var pattern = $"^({string.Join("|", sortablePropertyNames)})_(asc|desc)$";
 

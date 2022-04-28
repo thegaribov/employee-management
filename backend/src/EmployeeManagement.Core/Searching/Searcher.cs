@@ -21,10 +21,11 @@ namespace EmployeeManagement.Core.Searching
 
         public string GetQuery(string query)
         {
-            if (query != null)
+            var searchablePropertyNames = GetSearchablePropertyNames();
+
+            if (query != null && searchablePropertyNames.Any())
             {
                 var expressions = new List<string>();
-                var searchablePropertyNames = GetSearchablePropertyNames();
                 var concantenatePropertiesExpression = string.Join(" + \" \"  + ", searchablePropertyNames);
                 var queries = query.Split(" ");
 
