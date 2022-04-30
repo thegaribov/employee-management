@@ -46,10 +46,15 @@ namespace EmployeeManagement.Core.Filters.Base
 
             RuleFor(queryParams => queryParams.PageSize)
                 .Cascade(CascadeMode.Stop)
-
+                .GreaterThan(0)
                 .Must(qp => BasePaginator.AllowedPageSizes.Contains(qp.Value))
                 .WithMessage($"Page sizes can be : {string.Join(", ", BasePaginator.AllowedPageSizes)}")
                 .When(qp => qp.PageSize != null);
+
+            RuleFor(qp => qp.Page)
+                .Cascade(CascadeMode.Stop)
+                .GreaterThan(0)
+                .When(qp => qp.Page != null);
 
             #endregion
         }
