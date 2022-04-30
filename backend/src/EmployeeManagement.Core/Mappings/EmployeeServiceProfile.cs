@@ -9,9 +9,9 @@ using EmployeeManagement.Core.Entities;
 
 namespace EmployeeManagement.Core.Mappings
 {
-    public class EmployeeProfile : Profile
+    public class EmployeeServiceProfile : Profile
     {
-        public EmployeeProfile()
+        public EmployeeServiceProfile()
         {
             CreateMap<CreateEmployeeDTO, Employee>()
                 .ForMember(e => e.CreatedAt, o => o.Ignore())

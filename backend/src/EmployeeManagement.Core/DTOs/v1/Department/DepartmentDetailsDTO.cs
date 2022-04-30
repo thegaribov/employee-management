@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Core.DTOs.v1.Department
 {
-    public class DepartmentDTO
+    public class DepartmentDetailsDTO
     {
         /// <summary>
         /// Department id

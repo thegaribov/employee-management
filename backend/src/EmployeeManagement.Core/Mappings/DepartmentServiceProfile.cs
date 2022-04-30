@@ -9,19 +9,26 @@ using EmployeeManagement.Core.Entities;
 
 namespace EmployeeManagement.Core.Mappings
 {
-    public class DepartmentProfile : Profile
+    public class DepartmentServiceProfile : Profile
     {
-        public DepartmentProfile()
+        public DepartmentServiceProfile()
         {
             CreateMap<CreateDepartmentDTO, Department>()
                 .ForMember(e => e.CreatedAt, o => o.Ignore())
                 .ForMember(e => e.UpdatedAt, o => o.Ignore());
 
+            CreateMap<Department, DepartmentForCollectionDTO>();
+
             CreateMap<UpdateDepartmentDTO, Department>()
                 .ForMember(e => e.CreatedAt, o => o.Ignore())
                 .ForMember(e => e.UpdatedAt, o => o.Ignore());
 
-            CreateMap<Department, DepartmentDTO>();
+            CreateMap<Department, DepartmentDetailsDTO>()
+                .ReverseMap();
+
+            CreateMap<Employee, EmployeeForCollectionDTO>();
+
+            CreateMap<Employee, DepartmentEmployeeDetailsDTO>();
         }
     }
 }

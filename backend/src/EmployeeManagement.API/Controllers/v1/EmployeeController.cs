@@ -5,6 +5,7 @@ using EmployeeManagement.Core.Entities;
 using EmployeeManagement.Core.Extensions.ModelState;
 using EmployeeManagement.Core.Filters.Base;
 using EmployeeManagement.Service.Business.Abstracts;
+using Mainwave.MimeTypes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -13,8 +14,8 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.API.Controllers.v1
 {
-    [Produces(MediaTypeNames.Application.Json)]
-    [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MimeType.Application.Json)]
+    [Consumes(MimeType.Application.Json)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [Route("api/v1/employees")]
     [ApiController]
@@ -130,19 +131,19 @@ namespace EmployeeManagement.API.Controllers.v1
 
         #endregion
 
-        [HttpPost(Name = "employee-create")]
-        public async Task<IActionResult> Create([FromBody] CreateEmployeeDTO model)
-        {
-            var department = await _departmentService.GetAsync(model.DepartmentId);
-            if (department == null) return NotFound();
+        //[HttpPost(Name = "employee-create")]
+        //public async Task<IActionResult> Create([FromBody] CreateEmployeeDTO model)
+        //{
+        //    var department = await _departmentService.GetAsync(model.DepartmentId);
+        //    if (department == null) return NotFound();
 
-            var newEmployee = _mapper.Map<CreateEmployeeDTO, Employee>(model);
-            await _employeeService.CreateAsync(newEmployee);
+        //    var newEmployee = _mapper.Map<CreateEmployeeDTO, Employee>(model);
+        //    await _employeeService.CreateAsync(newEmployee);
 
-            var employeeDTO = _mapper.Map<Employee, EmployeeDTO>(newEmployee);
+        //    var employeeDTO = _mapper.Map<Employee, EmployeeDTO>(newEmployee);
 
-            return CreatedAtRoute("employee-details", new { Id = employeeDTO.Id }, employeeDTO);
-        }
+        //    return CreatedAtRoute("employee-details", new { Id = employeeDTO.Id }, employeeDTO);
+        //}
 
         #endregion
 
@@ -165,21 +166,21 @@ namespace EmployeeManagement.API.Controllers.v1
 
         #endregion
 
-        [HttpPut("{id:int}", Name = "employee-update")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateEmployeeDTO model)
-        {
-            var department = await _departmentService.GetAsync(model.DepartmentId);
-            if (department == null) return NotFound();
+        //[HttpPut("{id:int}", Name = "employee-update")]
+        //public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateEmployeeDTO model)
+        //{
+        //    var department = await _departmentService.GetAsync(model.DepartmentId);
+        //    if (department == null) return NotFound();
 
-            var employee = await _employeeService.GetAsync(id);
-            if (employee == null) return NotFound();
+        //    var employee = await _employeeService.GetAsync(id);
+        //    if (employee == null) return NotFound();
 
-            _mapper.Map<UpdateEmployeeDTO, Employee>(model, employee);
+        //    _mapper.Map<UpdateEmployeeDTO, Employee>(model, employee);
 
-            await _employeeService.UpdateAsync(employee);
+        //    await _employeeService.UpdateAsync(employee);
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         #endregion
 

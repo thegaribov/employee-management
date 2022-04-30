@@ -1,4 +1,7 @@
-﻿using EmployeeManagement.Core.Pagination.Shared;
+﻿using EmployeeManagement.Core.DTOs.v1.Department;
+using EmployeeManagement.Core.Entities;
+using EmployeeManagement.Core.Filters.Base;
+using EmployeeManagement.Core.Pagination.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +12,13 @@ namespace EmployeeManagement.Service.Business.Abstracts
 {
     public interface IDepartmentService
     {
-        Task<List<Core.Entities.Department>> GetAllAsync();
-        Task<Paginator<Core.Entities.Department>> GetAllSearchedPaginatedSortedAsync(string query, string sort, int? page, int? pageSize);
-        Task<Core.Entities.Department> GetAsync(int id);
-        Task CreateAsync(Core.Entities.Department department);
-        Task UpdateAsync(Core.Entities.Department department);
-        Task DeleteAsync(Core.Entities.Department department);
+        Task<IEnumerable<DepartmentForCollectionDTO>> GetAllAsync(QueryParams queryParams);
+        Task<DepartmentDetailsDTO> GetDetailsAsync(int id);
+        Task<DepartmentDetailsDTO> CreateAsync(CreateDepartmentDTO departmentDTO);
+        Task UpdateAsync(int id, UpdateDepartmentDTO departmentDTO);
+        Task DeleteAsync(int id);
+
+        Task<IEnumerable<EmployeeForCollectionDTO>> GetDepartmentEmployeesAsync(int departmentId, QueryParams queryParams);
+        Task<DepartmentEmployeeDetailsDTO> GetDepartmentEmployeeDetailsAsync(int departmentId, int employeeId);
     }
 }

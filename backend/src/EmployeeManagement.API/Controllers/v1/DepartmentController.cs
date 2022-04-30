@@ -4,6 +4,7 @@ using EmployeeManagement.Core.Entities;
 using EmployeeManagement.Core.Extensions.ModelState;
 using EmployeeManagement.Core.Filters.Base;
 using EmployeeManagement.Service.Business.Abstracts;
+using Mainwave.MimeTypes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -12,31 +13,20 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.API.Controllers.v1
 {
-    [Produces(MediaTypeNames.Application.Json)]
-    [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MimeType.Application.Json)]
+    [Consumes(MimeType.Application.Json)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(IDictionary<string, string[]>), StatusCodes.Status400BadRequest)]
     [Route("api/v1/departments")]
     [ApiController]
     public class DepartmentController : ControllerBase
     {
-        #region Fields
-
-        private readonly IMapper _mapper;
         private readonly IDepartmentService _departmentService;
 
-        #endregion
-
-        #region Ctor
-
-        public DepartmentController(IDepartmentService departmentService, IMapper mapper)
+        public DepartmentController(IDepartmentService departmentService)
         {
-            _mapper = mapper;
             _departmentService = departmentService;
         }
-
-        #endregion
-
-        #region List
 
         #region Documentation
 
@@ -54,146 +44,151 @@ namespace EmployeeManagement.API.Controllers.v1
         ///
         /// </remarks>
         /// <response code="200">Departments retrieved</response>
-        /// <response code="400">Paging, Searching, Sorting query string is not valid</response>
-        /// <response code="500">Server error</response>
-        [ProducesResponseType(typeof(IDictionary<string, string[]>), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(List<DepartmentDTO>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        /// <response code="400">
+        /// 1) Paging, searching or sorting query string is not valid
+        /// </response>
+
+        [ProducesResponseType(typeof(List<DepartmentDetailsDTO>), StatusCodes.Status200OK)]
 
         #endregion
 
-        [HttpGet(Name = "department-list")]
-        public async Task<IActionResult> List([FromQuery] QueryParams queryParams)
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] QueryParams queryParams)
         {
-            var departments = await _departmentService.GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize);
-
-            Response.Headers.Add("X-Pagination", departments.ToJson());
-
-            var model = _mapper.Map<IEnumerable<Department>, List<DepartmentDTO>>(departments.Data);
-
-            return Ok(model);
+            return Ok(await _departmentService.GetAllAsync(queryParams));
         }
-
-        #endregion
-
-        #region Details
 
         #region Documentation
 
         /// <summary>
-        /// Get details about specific department
+        /// Get details about specific department by Id
         /// </summary>
-        /// <param name="id">Detail id</param>
-        /// <response code="200">Related department info</response>
-        /// <response code="404">Requested resource not found</response>
-        /// <response code="500">Server error</response>
-        [ProducesResponseType(typeof(DepartmentDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        /// <param name="id">Department Id</param>
+        /// <response code="200">Department info</response>
+        [ProducesResponseType(typeof(DepartmentDetailsDTO), StatusCodes.Status200OK)]
 
         #endregion
 
         [HttpGet("{id:int}", Name = "department-details")]
-        public async Task<IActionResult> Details([FromRoute] int id)
+        public async Task<IActionResult> GetDetails([FromRoute] int id)
         {
-            var department = await _departmentService.GetAsync(id);
-            if (department == null) return NotFound();
-
-            var model = _mapper.Map<Department, DepartmentDTO>(department);
-
-            return Ok(model);
+            return Ok(await _departmentService.GetDetailsAsync(id));
         }
-
-        #endregion
-
-        #region Create
 
         #region Documentation
 
         /// <summary>
         /// Create a new department
         /// </summary>
-        /// <response code="201">Department created</response>
+        /// <response code="201">Department created successfully</response>
         /// <response code="400">DTO is not valid</response>
-        /// <response code="500">Server error</response>
-        [ProducesResponseType(typeof(DepartmentDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(DepartmentDetailsDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(IDictionary<string, string[]>), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
         #endregion
 
-        [HttpPost(Name = "department-create")]
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateDepartmentDTO model)
         {
-            var newDepartment = _mapper.Map<CreateDepartmentDTO, Department>(model);
-            await _departmentService.CreateAsync(newDepartment);
-
-            var departmentDTO = _mapper.Map<Department, DepartmentDTO>(newDepartment);
+            var departmentDTO = await _departmentService.CreateAsync(model);
 
             return CreatedAtRoute("department-details", new { Id = departmentDTO.Id }, departmentDTO);
         }
 
-        #endregion
-
-        #region Update
-
         #region Documentation
 
         /// <summary>
-        /// Update department
+        /// Update department by Id
         /// </summary>
-        /// <param name="id">Department id</param>
-        /// <response code="204">Department updated</response>
+        /// <param name="id">Department Id</param>
+        /// <response code="204">Department successfully updated</response>
         /// <response code="400">DTO is not valid</response>
-        /// <response code="404">Department is not found with specified id</response>
-        /// <response code="500">Server error</response>
+        /// <response code="404">
+        /// 1) Department is not found with specified Id
+        /// </response>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(IDictionary<string, string[]>), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
         #endregion
 
-        [HttpPut("{id:int}", Name = "department-update")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateDepartmentDTO model)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateDepartmentDTO departmentDTO)
         {
-            var department = await _departmentService.GetAsync(id);
-            if (department == null) return NotFound();
-
-            _mapper.Map<UpdateDepartmentDTO, Department>(model, department);
-
-            await _departmentService.UpdateAsync(department);
-
+            await _departmentService.UpdateAsync(id, departmentDTO);
+            
             return NoContent();
         }
 
-        #endregion
-
-        #region Delete
-
         #region Documentation
 
         /// <summary>
-        /// Delete department
+        /// Delete department by Id
         /// </summary>
-        /// <param name="id">Department id</param>
+        /// <param name="id">Department Id</param>
         /// <response code="200">Department deleted</response>
-        /// <response code="404">Department is not found with specified id</response>
-        /// <response code="500">Server error</response>
+        /// <response code="404">
+        /// 1) Department is not found with specified Id
+        /// </response>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
         #endregion
 
-        [HttpDelete("{id:int}", Name = "department-delete")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var department = await _departmentService.GetAsync(id);
-            if (department == null) return NotFound();
+            await _departmentService.DeleteAsync(id);
+            
+            return Ok();
+        }
 
-            await _departmentService.DeleteAsync(department);
+        #region Employees
 
+        [HttpGet("{id:int}/employees")]
+        public async Task<IActionResult> GetDepartmentEmployees([FromRoute] int id, [FromQuery] QueryParams queryParams)
+        {
+            return Ok(await _departmentService.GetDepartmentEmployeesAsync(id, queryParams));
+        }
+
+        [HttpPost("{id:int}/employees")]
+        public async Task<IActionResult> CreateDepartmentEmployee([FromRoute] int id)
+        {
+            //var employee = await _departmentService.GetAsync(departmentId);
+            //if (employee == null) return NotFound();
+
+            //var model = _mapper.Map<Employee, EmployeeDTO>(employee);
+
+            //return Ok(model);
+            return Ok();
+        }
+
+        [HttpGet("{departmentId:int}/employees/{employeeId}")]
+        public async Task<IActionResult> GetDepartmentEmployeeDetails([FromRoute] int departmentId, [FromRoute] int employeeId)
+        {
+            return Ok(await _departmentService.GetDepartmentEmployeeDetailsAsync(departmentId, employeeId));
+        }
+
+        [HttpPut("{departmentId:int}/employees/{employeeId}")]
+        public async Task<IActionResult> UpdateDepartmentEmployeeDetails([FromRoute] int departmentId)
+        {
+            //var employee = await _departmentService.GetAsync(departmentId);
+            //if (employee == null) return NotFound();
+
+            //var model = _mapper.Map<Employee, EmployeeDTO>(employee);
+
+            //return Ok(model);
+            return Ok();
+        }
+
+        [HttpDelete("{departmentId:int}/employees/{employeeId}")]
+        public async Task<IActionResult> DeleteDepartmentEmployee([FromRoute] int departmentId)
+        {
+            //var employee = await _departmentService.GetAsync(departmentId);
+            //if (employee == null) return NotFound();
+
+            //var model = _mapper.Map<Employee, EmployeeDTO>(employee);
+
+            //return Ok(model);
             return Ok();
         }
 
