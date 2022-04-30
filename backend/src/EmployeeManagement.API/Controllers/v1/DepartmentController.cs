@@ -142,54 +142,18 @@ namespace EmployeeManagement.API.Controllers.v1
             return Ok();
         }
 
-        #region Employees
+        #region Department employees
 
-        [HttpGet("{id:int}/employees")]
-        public async Task<IActionResult> GetDepartmentEmployees([FromRoute] int id, [FromQuery] QueryParams queryParams)
+        [HttpGet("{departmentId:int}/employees")]
+        public async Task<IActionResult> GetEmployees([FromRoute] int departmentId, [FromQuery] QueryParams queryParams)
         {
-            return Ok(await _departmentService.GetDepartmentEmployeesAsync(id, queryParams));
-        }
-
-        [HttpPost("{id:int}/employees")]
-        public async Task<IActionResult> CreateDepartmentEmployee([FromRoute] int id)
-        {
-            //var employee = await _departmentService.GetAsync(departmentId);
-            //if (employee == null) return NotFound();
-
-            //var model = _mapper.Map<Employee, EmployeeDTO>(employee);
-
-            //return Ok(model);
-            return Ok();
+            return Ok(await _departmentService.GetEmployeesAsync(departmentId, queryParams));
         }
 
         [HttpGet("{departmentId:int}/employees/{employeeId}")]
-        public async Task<IActionResult> GetDepartmentEmployeeDetails([FromRoute] int departmentId, [FromRoute] int employeeId)
+        public async Task<IActionResult> GetEmployeeDetails([FromRoute] int departmentId, [FromRoute] int employeeId)
         {
-            return Ok(await _departmentService.GetDepartmentEmployeeDetailsAsync(departmentId, employeeId));
-        }
-
-        [HttpPut("{departmentId:int}/employees/{employeeId}")]
-        public async Task<IActionResult> UpdateDepartmentEmployeeDetails([FromRoute] int departmentId)
-        {
-            //var employee = await _departmentService.GetAsync(departmentId);
-            //if (employee == null) return NotFound();
-
-            //var model = _mapper.Map<Employee, EmployeeDTO>(employee);
-
-            //return Ok(model);
-            return Ok();
-        }
-
-        [HttpDelete("{departmentId:int}/employees/{employeeId}")]
-        public async Task<IActionResult> DeleteDepartmentEmployee([FromRoute] int departmentId)
-        {
-            //var employee = await _departmentService.GetAsync(departmentId);
-            //if (employee == null) return NotFound();
-
-            //var model = _mapper.Map<Employee, EmployeeDTO>(employee);
-
-            //return Ok(model);
-            return Ok();
+            return Ok(await _departmentService.GetEmployeeDetailsAsync(departmentId, employeeId));
         }
 
         #endregion
