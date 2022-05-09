@@ -10,6 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using System.Linq;
+using System;
+using System.Net.Http.Headers;
+using EmployeeManagement.Core.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace EmployeeManagement.API.Controllers.v1
 {
@@ -61,7 +66,7 @@ namespace EmployeeManagement.API.Controllers.v1
         #region Documentation
 
         /// <summary>
-        /// Get details about specific department by Id
+        /// Get department details by Id
         /// </summary>
         /// <param name="id">Department Id</param>
         /// <response code="200">Department info</response>
@@ -82,13 +87,12 @@ namespace EmployeeManagement.API.Controllers.v1
         /// </summary>
         /// <response code="201">Department created successfully</response>
         /// <response code="400">DTO is not valid</response>
-        [ProducesResponseType(typeof(DepartmentDetailsDTO), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(IDictionary<string, string[]>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(CreateDepartmentResponseDTO), StatusCodes.Status201Created)]
 
         #endregion
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateDepartmentDTO model)
+        public async Task<IActionResult> Create([FromBody] CreateDepartmentRequestDTO model)
         {
             var departmentDTO = await _departmentService.CreateAsync(model);
 
@@ -115,7 +119,7 @@ namespace EmployeeManagement.API.Controllers.v1
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateDepartmentDTO departmentDTO)
         {
             await _departmentService.UpdateAsync(id, departmentDTO);
-            
+
             return NoContent();
         }
 
@@ -138,7 +142,7 @@ namespace EmployeeManagement.API.Controllers.v1
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await _departmentService.DeleteAsync(id);
-            
+
             return Ok();
         }
 
@@ -154,6 +158,22 @@ namespace EmployeeManagement.API.Controllers.v1
         public async Task<IActionResult> GetEmployeeDetails([FromRoute] int departmentId, [FromRoute] int employeeId)
         {
             return Ok(await _departmentService.GetEmployeeDetailsAsync(departmentId, employeeId));
+        }
+
+        [HttpGet("test")]
+        [Produces(MimeType.Application.Pdf, MimeType.Application.Json)]
+        public async Task<IActionResult> Test([Required, FromHeader(Name = HeaderNames.Accept)] string[] acceptHeaders)
+        {
+            if (acceptHeaders.Any(a => a.Equals(MimeType.Application.Pdf, StringComparison.InvariantCulture)))
+            {
+                //Call related service 
+                return Ok("Some file content");
+            }
+            else
+            {
+                //Call related service 
+                return Ok("Some content with json structure");
+            }
         }
 
         #endregion
