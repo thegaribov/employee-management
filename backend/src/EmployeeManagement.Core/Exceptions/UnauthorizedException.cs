@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Core.Exceptions
 {
-    public class UnauthorizedException : Exception
+    public class UnauthorizedException : ApplicationException
     {
         public UnauthorizedException() 
             : base("User should login to system")

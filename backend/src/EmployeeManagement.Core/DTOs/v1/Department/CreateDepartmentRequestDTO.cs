@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Core.DTOs.v1.Department
 {
-    public class CreateDepartmentDTO
+    public class CreateDepartmentRequestDTO
     {
         /// <summary>
         /// Department name
@@ -15,17 +15,15 @@ namespace EmployeeManagement.Core.DTOs.v1.Department
         public string Name { get; set; }
     }
 
-    public class CreateDepartmentDTOValidator : AbstractValidator<CreateDepartmentDTO>
+    public class CreateDepartmentRequestDTOValidator : AbstractValidator<CreateDepartmentRequestDTO>
     {
         private string NOT_NULL_MESSAGE { get; set; } = "Cannot be empty";
         private string NOT_EMPTY_MESSAGE { get; set; } = "Cannot be empty";
 
-        public CreateDepartmentDTOValidator()
+        public CreateDepartmentRequestDTOValidator()
         {
             IntegrateRules();
         }
-
-        
         private void IntegrateRules()
         {
             #region Name

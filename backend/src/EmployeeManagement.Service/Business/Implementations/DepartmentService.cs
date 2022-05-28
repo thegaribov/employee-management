@@ -48,14 +48,14 @@ namespace EmployeeManagement.Service.Business.Implementations
             return _mapper.Map<DepartmentDetailsDTO>(department);
         }
 
-        public async Task<DepartmentDetailsDTO> CreateAsync(CreateDepartmentDTO departmentDTO)
+        public async Task<CreateDepartmentResponseDTO> CreateAsync(CreateDepartmentRequestDTO departmentDTO)
         {
-            var department = _mapper.Map<CreateDepartmentDTO, Department>(departmentDTO);
+            var department = _mapper.Map<Department>(departmentDTO);
 
             await _unitOfWork.Departments.CreateAsync(department);
             await _unitOfWork.CommitAsync();
 
-            return _mapper.Map<DepartmentDetailsDTO>(department);
+            return _mapper.Map<CreateDepartmentResponseDTO>(department);
         }
 
         public async Task UpdateAsync(int id, UpdateDepartmentDTO departmentDTO)
@@ -78,9 +78,9 @@ namespace EmployeeManagement.Service.Business.Implementations
             await _unitOfWork.CommitAsync();
         }
 
-        #region Employees
+        #region Department employees
 
-        public async Task<IEnumerable<EmployeeForCollectionDTO>> GetDepartmentEmployeesAsync(int departmentId, QueryParams queryParams)
+        public async Task<IEnumerable<EmployeeForCollectionDTO>> GetEmployeesAsync(int departmentId, QueryParams queryParams)
         {
             var employees = await _unitOfWork.Employees
                 .GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize, e => e.DepartmentId == departmentId);
@@ -90,12 +90,12 @@ namespace EmployeeManagement.Service.Business.Implementations
             return _mapper.Map<IEnumerable<EmployeeForCollectionDTO>>(employees.Data);
         }
 
-        public async Task<DepartmentEmployeeDetailsDTO> GetDepartmentEmployeeDetailsAsync(int departmentId, int employeeId)
+        public async Task<EmployeeDetailsResponseDTO> GetEmployeeDetailsAsync(int departmentId, int employeeId)
         {
             var employee = await _unitOfWork.Employees.GetSingleOrDefaultAsync(e => e.Id == employeeId && e.DepartmentId == departmentId);
             if (employee is null) throw new NotFoundException($"Employee not found with id {employeeId}, and department id {departmentId}");
 
-            return _mapper.Map<DepartmentEmployeeDetailsDTO>(employee);
+            return _mapper.Map<EmployeeDetailsResponseDTO>(employee);
         }
 
         #endregion

@@ -13,9 +13,11 @@ namespace EmployeeManagement.Core.Mappings
     {
         public DepartmentServiceProfile()
         {
-            CreateMap<CreateDepartmentDTO, Department>()
+            CreateMap<CreateDepartmentRequestDTO, Department>()
                 .ForMember(e => e.CreatedAt, o => o.Ignore())
                 .ForMember(e => e.UpdatedAt, o => o.Ignore());
+
+            CreateMap<Department, CreateDepartmentResponseDTO>();
 
             CreateMap<Department, DepartmentForCollectionDTO>();
 
@@ -26,9 +28,11 @@ namespace EmployeeManagement.Core.Mappings
             CreateMap<Department, DepartmentDetailsDTO>()
                 .ReverseMap();
 
+            
+
             CreateMap<Employee, EmployeeForCollectionDTO>();
 
-            CreateMap<Employee, DepartmentEmployeeDetailsDTO>();
+            CreateMap<Employee, EmployeeDetailsResponseDTO>();
         }
     }
 }

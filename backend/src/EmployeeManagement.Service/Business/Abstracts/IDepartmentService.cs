@@ -14,11 +14,11 @@ namespace EmployeeManagement.Service.Business.Abstracts
     {
         Task<IEnumerable<DepartmentForCollectionDTO>> GetAllAsync(QueryParams queryParams);
         Task<DepartmentDetailsDTO> GetDetailsAsync(int id);
-        Task<DepartmentDetailsDTO> CreateAsync(CreateDepartmentDTO departmentDTO);
+        Task<CreateDepartmentResponseDTO> CreateAsync(CreateDepartmentRequestDTO departmentDTO);
         Task UpdateAsync(int id, UpdateDepartmentDTO departmentDTO);
         Task DeleteAsync(int id);
 
-        Task<IEnumerable<EmployeeForCollectionDTO>> GetDepartmentEmployeesAsync(int departmentId, QueryParams queryParams);
-        Task<DepartmentEmployeeDetailsDTO> GetDepartmentEmployeeDetailsAsync(int departmentId, int employeeId);
+        Task<IEnumerable<EmployeeForCollectionDTO>> GetEmployeesAsync(int departmentId, QueryParams queryParams);
+        Task<EmployeeDetailsResponseDTO> GetEmployeeDetailsAsync(int departmentId, int employeeId);
     }
 }

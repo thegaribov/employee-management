@@ -71,7 +71,13 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
                     paginator.QuerySet = paginator.QuerySet.OrderBy(sortQuery);
                 }
             }
+            //else
+            //{
+            //    paginator.QuerySet = paginator.QuerySet.OrderBy(o => o)
+            //}
 
+
+            var queryResult = paginator.QuerySet.ToQueryString();
             paginator.Data = await paginator.QuerySet.ToListAsync();
      
             return paginator;

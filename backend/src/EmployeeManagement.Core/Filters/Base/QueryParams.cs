@@ -17,7 +17,7 @@ namespace EmployeeManagement.Core.Filters.Base
         public int? Page { get; set; }
 
         /// <summary>
-        /// Page number to request
+        /// Page size to request
         /// </summary>
         public int? PageSize { get; set; }
 
