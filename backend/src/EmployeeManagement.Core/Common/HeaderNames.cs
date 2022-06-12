@@ -298,5 +298,8 @@ namespace EmployeeManagement.Core.Common
 
         /// <summary>Gets the <c>X-XSS-Protection</c> HTTP header name.</summary>
         public const  string XXSSProtection = "X-XSS-Protection";
+
+        /// <summary>Gets the pagination result of query set.</summary>
+        public const string XPagination = "X-Pagination";
     }
 }

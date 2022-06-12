@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.DataAccess.Repositories.Abstracts
 {
-    public interface IDepartmentRepository : IBaseRepository<Department>
+    public interface IDepartmentRepository : IBaseRepository<Department, int>
     {
 
     }

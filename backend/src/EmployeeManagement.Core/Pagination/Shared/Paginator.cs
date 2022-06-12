@@ -4,18 +4,20 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using EmployeeManagement.Core.Common;
 
 namespace EmployeeManagement.Core.Pagination.Shared
 {
-    public class Paginator<T> : BasePaginator
+    public class Paginator<TEntity> : BasePaginator
+        where TEntity : class, new()
     {
         [JsonIgnore]
-        public IQueryable<T> QuerySet { get; set; }
+        public IQueryable<TEntity> QuerySet { get; set; }
 
         [JsonIgnore]
-        public IEnumerable<T> Data { get; set; }
+        public IEnumerable<TEntity> Data { get; set; }
 
-        public Paginator(IQueryable<T> query, int page, int pageSize)
+        public Paginator(IQueryable<TEntity> query, int page, int pageSize)
             :base(page, pageSize, query.Count())
         {
             var skipCount = CalculateSkipCount(CurrentPage, PageSize);

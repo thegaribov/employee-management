@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EmployeeManagement.Core.Common;
 using EmployeeManagement.Core.DTOs.v1.Department;
 using EmployeeManagement.Core.Entities;
 using EmployeeManagement.Core.Exceptions;
@@ -35,7 +36,7 @@ namespace EmployeeManagement.Service.Business.Implementations
         {
             var departments = await _unitOfWork.Departments.GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize);
 
-            _httpContextAccessor.HttpContext.Response.Headers.Add("X-Pagination", departments.ToJson());
+            _httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.XPagination, departments.ToJson());
 
             return _mapper.Map<IEnumerable<DepartmentForCollectionDTO>>(departments.Data);
         }
@@ -85,7 +86,7 @@ namespace EmployeeManagement.Service.Business.Implementations
             var employees = await _unitOfWork.Employees
                 .GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize, e => e.DepartmentId == departmentId);
 
-            _httpContextAccessor.HttpContext.Response.Headers.Add("X-Pagination", employees.ToJson());
+            _httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.XPagination, employees.ToJson());
 
             return _mapper.Map<IEnumerable<EmployeeForCollectionDTO>>(employees.Data);
         }

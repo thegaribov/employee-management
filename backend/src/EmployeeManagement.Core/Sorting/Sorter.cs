@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Core.Sorting
 {
-    public class Sorter<TEntity>
-         where TEntity : class, IEntity, new()
+    public class Sorter<TEntity, TKey>
+         where TEntity : class, IEntity<TKey>, new()
     {
         public List<string> GetSortablePropertyNames()
         {

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Core.Common
 {
-    public interface IEntity
+    public interface IEntity<TKey>
     {
-
+        public TKey Id { get; set; }
     }
 }

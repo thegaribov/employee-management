@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Core.Entities
 {
-    public class Employee : IEntity, ICreatedAt, IUpdatedAt
+    public class Employee : IEntity<int>, ICreatedAt, IUpdatedAt
     {
         public int Id { get; set; }
 

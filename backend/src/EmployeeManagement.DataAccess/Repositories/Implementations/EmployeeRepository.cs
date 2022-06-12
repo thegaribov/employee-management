@@ -14,14 +14,12 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.DataAccess.Repositories.Implementations
 {
-    public class EmployeeRepository : EFBaseRepository<Employee>, IEmployeeRepository
+    public class EmployeeRepository : EFBaseRepository<Employee, int>, IEmployeeRepository
     {
-        private readonly EmployeeManagementContext _context;
-
         public EmployeeRepository(EmployeeManagementContext context)
             : base(context)
         {
-            _context = context;
+
         }
 
         public async virtual Task<List<Employee>> GetAllSearchedAsync(string query)
@@ -49,7 +47,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations
             var expression = string.Join(" and ", expressionList);
 
 
-            return await _context.Employees.Where(expression, query.Split(" ")).ToListAsync();
+            return await _dbContext.Employees.Where(expression, query.Split(" ")).ToListAsync();
         }
     }
 

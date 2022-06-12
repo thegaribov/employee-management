@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.DataAccess.Repositories.Abstracts.Base
 {
-    public interface IBaseRepository<TEntity>
-        where TEntity : class, IEntity, new()
+    public interface IBaseRepository<TEntity, TKey>
+        where TEntity : class, IEntity<TKey>, new()
     {
         Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> expression = null);
         Task<Paginator<TEntity>> GetAllSearchedPaginatedSortedAsync(string query, string sort, int? page, int? pageSize, Expression<Func<TEntity, bool>> expression = null);

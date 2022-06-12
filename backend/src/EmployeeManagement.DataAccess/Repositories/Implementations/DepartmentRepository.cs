@@ -2,6 +2,7 @@
 using EmployeeManagement.DataAccess.Persistance.Contexts;
 using EmployeeManagement.DataAccess.Repositories.Abstracts;
 using EmployeeManagement.DataAccess.Repositories.Implementations.Base;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,15 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.DataAccess.Repositories.Implementations
 {
-    public class DepartmentRepository : EFBaseRepository<Department>, IDepartmentRepository
+    public class DepartmentRepository : EFBaseRepository<Department, int>, IDepartmentRepository
     {
-        private readonly EmployeeManagementContext _context;
-
-        public DepartmentRepository(EmployeeManagementContext context)
-            : base(context)
+        public DepartmentRepository(EmployeeManagementContext context) 
+            : base(context) 
         {
-            _context = context;
+            
         }
+
+
+
     }
 }

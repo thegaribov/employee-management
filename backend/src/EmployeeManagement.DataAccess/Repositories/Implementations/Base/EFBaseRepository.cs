@@ -15,16 +15,16 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
 {
-    public abstract class EFBaseRepository<TEntity> : IBaseRepository<TEntity>
-        where TEntity : class, IEntity, new()
+    public abstract class EFBaseRepository<TEntity, TKey> : IBaseRepository<TEntity, TKey>
+        where TEntity : class, IEntity<TKey>, new()
     {
-        private readonly EmployeeManagementContext _db;
+        protected readonly EmployeeManagementContext _dbContext;
         private readonly DbSet<TEntity> _dbTable;
 
-        public EFBaseRepository(EmployeeManagementContext db)
+        public EFBaseRepository(EmployeeManagementContext dbContext)
         {
-            _db = db;
-            _dbTable = db.Set<TEntity>();
+            _dbContext = dbContext;
+            _dbTable = _dbContext.Set<TEntity>();
         }
 
         public async virtual Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> expression = null)
@@ -48,7 +48,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             //Search part
             if (!string.IsNullOrEmpty(query))
             {
-                var searcher = new Searcher<TEntity>();
+                var searcher = new Searcher<TEntity, TKey>();
                 var sortQuery = searcher.GetQuery(query);
 
                 if (!string.IsNullOrEmpty(sortQuery))
@@ -58,12 +58,12 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             }
 
             //Pagination part
-            var paginator = new Paginator<TEntity>(querySet, page.GetValueOrDefault(1), pageSize.GetValueOrDefault(10));
+            var paginator = new Paginator<TEntity>(querySet.OrderBy(o => o.Id), page.GetValueOrDefault(1), pageSize.GetValueOrDefault(10));
 
             //Sorting part
             if (!string.IsNullOrEmpty(sort))
             {
-                var sorter = new Sorter<TEntity>();
+                var sorter = new Sorter<TEntity, TKey>();
                 var sortQuery = sorter.GetQuery(sort);
 
                 if (!string.IsNullOrEmpty(sortQuery))
@@ -71,11 +71,6 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
                     paginator.QuerySet = paginator.QuerySet.OrderBy(sortQuery);
                 }
             }
-            //else
-            //{
-            //    paginator.QuerySet = paginator.QuerySet.OrderBy(o => o)
-            //}
-
 
             var queryResult = paginator.QuerySet.ToQueryString();
             paginator.Data = await paginator.QuerySet.ToListAsync();
@@ -91,7 +86,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             if (expression != null)
                 querySet = querySet.Where(expression);
 
-            var paginator = new Paginator<TEntity>(querySet, page, pageSize);
+            var paginator = new Paginator<TEntity>(querySet.OrderBy(o => o.Id), page, pageSize);
             paginator.Data = await paginator.QuerySet.ToListAsync();
 
             return paginator;
@@ -105,7 +100,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             if (expression != null)
                 querySet = querySet.Where(expression);
 
-            var sorter = new Sorter<TEntity>();
+            var sorter = new Sorter<TEntity, TKey>();
             var sortQuery = sorter.GetQuery(query);
 
             if (!string.IsNullOrEmpty(sortQuery))
@@ -124,7 +119,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             if (expression != null)
                 querySet = querySet.Where(expression);
 
-            var searcher = new Searcher<TEntity>();
+            var searcher = new Searcher<TEntity, TKey>();
             var sortQuery = searcher.GetQuery(query);
 
             if (!string.IsNullOrEmpty(sortQuery) && !string.IsNullOrEmpty(query))
@@ -158,7 +153,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
         public async virtual Task UpdateAsync(TEntity data)
         {
             _dbTable.Attach(data);
-            _db.Entry(data).State = EntityState.Modified;
+            _dbContext.Entry(data).State = EntityState.Modified;
         }
 
         public async virtual Task DeleteAsync(TEntity data)

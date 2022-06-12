@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Core.Searching
 {
-    public class Searcher<TEntity>
-         where TEntity : class, IEntity, new()
+    public class Searcher<TEntity, TKey>
+         where TEntity : class, IEntity<TKey>, new()
     {
         public IEnumerable<string> GetSearchablePropertyNames()
         {
