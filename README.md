@@ -1,3 +1,6 @@
+# Purpose
+Demonstration of dynamic filtering on entities
+
 # About system
 Basic employee management system. Features :
 1. Create new department
