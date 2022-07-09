@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace EmployeeManagement.Core.Sorting
+namespace EmployeeManagement.Core.Filters.Sorting
 {
     public class Sorter<TEntity, TKey>
          where TEntity : class, IEntity<TKey>, new()

@@ -1,6 +1,6 @@
 ﻿using EmployeeManagement.Core.Common;
-using EmployeeManagement.Core.Searching;
-using EmployeeManagement.Core.Sorting;
+using EmployeeManagement.Core.Filters.Searching;
+using EmployeeManagement.Core.Filters.Sorting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

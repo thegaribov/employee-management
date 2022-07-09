@@ -1,7 +1,7 @@
 ﻿using EmployeeManagement.Core.Common;
-using EmployeeManagement.Core.Pagination.Shared;
-using EmployeeManagement.Core.Searching;
-using EmployeeManagement.Core.Sorting;
+using EmployeeManagement.Core.Filters.Pagination;
+using EmployeeManagement.Core.Filters.Searching;
+using EmployeeManagement.Core.Filters.Sorting;
 using EmployeeManagement.DataAccess.Persistance.Contexts;
 using EmployeeManagement.DataAccess.Repositories.Abstracts.Base;
 using Microsoft.EntityFrameworkCore;
@@ -150,13 +150,13 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             await _dbTable.AddAsync(data);
         }
 
-        public async virtual Task UpdateAsync(TEntity data)
+        public virtual void Update(TEntity data)
         {
             _dbTable.Attach(data);
             _dbContext.Entry(data).State = EntityState.Modified;
         }
 
-        public async virtual Task DeleteAsync(TEntity data)
+        public virtual void Delete(TEntity data)
         {
             _dbTable.Remove(data);
         }

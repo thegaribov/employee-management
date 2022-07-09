@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmployeeManagement.Core.Pagination.Shared
+namespace EmployeeManagement.Core.Filters.Pagination
 {
     public abstract class BasePaginator
     {

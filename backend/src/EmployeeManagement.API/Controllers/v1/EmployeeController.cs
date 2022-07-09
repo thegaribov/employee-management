@@ -3,7 +3,7 @@ using EmployeeManagement.Core.DTOs.v1.Department;
 using EmployeeManagement.Core.DTOs.v1.Employee;
 using EmployeeManagement.Core.Entities;
 using EmployeeManagement.Core.Extensions.ModelState;
-using EmployeeManagement.Core.Filters.Base;
+using EmployeeManagement.Core.Filters;
 using EmployeeManagement.Service.Business.Abstracts;
 using Mainwave.MimeTypes;
 using Microsoft.AspNetCore.Http;

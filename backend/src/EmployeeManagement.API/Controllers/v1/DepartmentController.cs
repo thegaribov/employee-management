@@ -2,7 +2,6 @@
 using EmployeeManagement.Core.DTOs.v1.Department;
 using EmployeeManagement.Core.Entities;
 using EmployeeManagement.Core.Extensions.ModelState;
-using EmployeeManagement.Core.Filters.Base;
 using EmployeeManagement.Service.Business.Abstracts;
 using Mainwave.MimeTypes;
 using Microsoft.AspNetCore.Http;
@@ -15,6 +14,7 @@ using System;
 using System.Net.Http.Headers;
 using EmployeeManagement.Core.Common;
 using System.ComponentModel.DataAnnotations;
+using EmployeeManagement.Core.Filters;
 
 namespace EmployeeManagement.API.Controllers.v1
 {
@@ -158,22 +158,6 @@ namespace EmployeeManagement.API.Controllers.v1
         public async Task<IActionResult> GetEmployeeDetails([FromRoute] int departmentId, [FromRoute] int employeeId)
         {
             return Ok(await _departmentService.GetEmployeeDetailsAsync(departmentId, employeeId));
-        }
-
-        [HttpGet("test")]
-        [Produces(MimeType.Application.Pdf, MimeType.Application.Json)]
-        public async Task<IActionResult> Test([Required, FromHeader(Name = HeaderNames.Accept)] string[] acceptHeaders)
-        {
-            if (acceptHeaders.Any(a => a.Equals(MimeType.Application.Pdf, StringComparison.InvariantCulture)))
-            {
-                //Call related service 
-                return Ok("Some file content");
-            }
-            else
-            {
-                //Call related service 
-                return Ok("Some content with json structure");
-            }
         }
 
         #endregion

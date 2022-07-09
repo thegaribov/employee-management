@@ -1,5 +1,5 @@
 ﻿using EmployeeManagement.Core.Common;
-using EmployeeManagement.Core.Pagination.Shared;
+using EmployeeManagement.Core.Filters.Pagination;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Abstracts.Base
         Task<TEntity> GetSingleOrDefaultAsync(Expression<Func<TEntity, bool>> expression);
         Task<TEntity> GetAsync(object id);
         Task CreateAsync(TEntity data);
-        Task UpdateAsync(TEntity data);
-        Task DeleteAsync(TEntity data);
+        void Update(TEntity data);
+        void Delete(TEntity data);
     }
 }

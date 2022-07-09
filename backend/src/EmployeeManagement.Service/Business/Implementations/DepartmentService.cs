@@ -3,8 +3,8 @@ using EmployeeManagement.Core.Common;
 using EmployeeManagement.Core.DTOs.v1.Department;
 using EmployeeManagement.Core.Entities;
 using EmployeeManagement.Core.Exceptions;
-using EmployeeManagement.Core.Filters.Base;
-using EmployeeManagement.Core.Pagination.Shared;
+using EmployeeManagement.Core.Filters;
+using EmployeeManagement.Core.Filters.Pagination;
 using EmployeeManagement.DataAccess.UnitOfWork.Abstracts;
 using EmployeeManagement.Service.Business.Abstracts;
 using Microsoft.AspNetCore.Http;
@@ -66,7 +66,7 @@ namespace EmployeeManagement.Service.Business.Implementations
 
             department = _mapper.Map<UpdateDepartmentDTO, Department>(departmentDTO, department);
 
-            await _unitOfWork.Departments.UpdateAsync(department);
+            _unitOfWork.Departments.Update(department);
             await _unitOfWork.CommitAsync();
         }
 
@@ -75,7 +75,7 @@ namespace EmployeeManagement.Service.Business.Implementations
             var department = await _unitOfWork.Departments.GetAsync(id);
             if (department is null) throw new NotFoundException($"Department is not found with id {id}");
 
-            await _unitOfWork.Departments.DeleteAsync(department);
+            _unitOfWork.Departments.Delete(department);
             await _unitOfWork.CommitAsync();
         }
 

@@ -1,4 +1,4 @@
-﻿using EmployeeManagement.Core.Pagination.Shared;
+﻿using EmployeeManagement.Core.Filters.Pagination;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmployeeManagement.Core.Filters.Base
+namespace EmployeeManagement.Core.Filters
 {
 
     public class QueryParams

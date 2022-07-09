@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace EmployeeManagement.Core.Searching
+namespace EmployeeManagement.Core.Filters.Searching
 {
     public class Searcher<TEntity, TKey>
          where TEntity : class, IEntity<TKey>, new()

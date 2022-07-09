@@ -1,5 +1,5 @@
 ﻿using EmployeeManagement.Core.Entities;
-using EmployeeManagement.Core.Pagination.Shared;
+using EmployeeManagement.Core.Filters.Pagination;
 using EmployeeManagement.DataAccess.UnitOfWork.Abstracts;
 using EmployeeManagement.Service.Business.Abstracts;
 using System.Collections.Generic;
@@ -53,13 +53,13 @@ namespace EmployeeManagement.Service.Business.Implementations
 
         public async Task UpdateAsync(Core.Entities.Employee ticket)
         {
-            await _unitOfWork.Employees.UpdateAsync(ticket);
+            _unitOfWork.Employees.Update(ticket);
             await _unitOfWork.CommitAsync();
         }
 
         public async Task DeleteAsync(Core.Entities.Employee ticket)
         {
-            await _unitOfWork.Employees.DeleteAsync(ticket);
+            _unitOfWork.Employees.Delete(ticket);
             await _unitOfWork.CommitAsync();
         }
     }

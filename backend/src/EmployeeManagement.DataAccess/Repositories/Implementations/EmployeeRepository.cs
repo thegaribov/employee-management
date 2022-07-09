@@ -1,5 +1,5 @@
 ﻿using EmployeeManagement.Core.Entities;
-using EmployeeManagement.Core.Searching;
+using EmployeeManagement.Core.Filters.Searching;
 using EmployeeManagement.DataAccess.Persistance.Contexts;
 using EmployeeManagement.DataAccess.Repositories.Abstracts;
 using EmployeeManagement.DataAccess.Repositories.Implementations.Base;

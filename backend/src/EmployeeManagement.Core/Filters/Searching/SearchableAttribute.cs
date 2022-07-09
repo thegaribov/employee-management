@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmployeeManagement.Core.Sorting
+namespace EmployeeManagement.Core.Filters.Searching
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class SortableAttribute : Attribute
+    public class SearchableAttribute : Attribute
     {
 
     }

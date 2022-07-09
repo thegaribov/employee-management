@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using EmployeeManagement.Core.Common;
 
-namespace EmployeeManagement.Core.Pagination.Shared
+namespace EmployeeManagement.Core.Filters.Pagination
 {
     public class Paginator<TEntity> : BasePaginator
         where TEntity : class, new()
@@ -18,7 +18,7 @@ namespace EmployeeManagement.Core.Pagination.Shared
         public IEnumerable<TEntity> Data { get; set; }
 
         public Paginator(IQueryable<TEntity> query, int page, int pageSize)
-            :base(page, pageSize, query.Count())
+            : base(page, pageSize, query.Count())
         {
             var skipCount = CalculateSkipCount(CurrentPage, PageSize);
             QuerySet = query.Skip(skipCount).Take(PageSize);

@@ -1,5 +1,5 @@
 ﻿using EmployeeManagement.Core.Entities;
-using EmployeeManagement.Core.Pagination.Shared;
+using EmployeeManagement.Core.Filters.Pagination;
 using System;
 using System.Collections.Generic;
 using System.Linq;
