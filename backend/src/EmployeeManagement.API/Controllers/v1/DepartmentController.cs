@@ -21,7 +21,7 @@ namespace EmployeeManagement.API.Controllers.v1
     [Produces(MimeType.Application.Json)]
     [Consumes(MimeType.Application.Json)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(typeof(IDictionary<string, string[]>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("api/v1/departments")]
     [ApiController]
     public class DepartmentController : ControllerBase
@@ -58,7 +58,7 @@ namespace EmployeeManagement.API.Controllers.v1
         #endregion
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] QueryParams queryParams)
+        public async Task<IActionResult> GetAll([FromQuery] DepartmentsQueryParams queryParams)
         {
             return Ok(await _departmentService.GetAllAsync(queryParams));
         }

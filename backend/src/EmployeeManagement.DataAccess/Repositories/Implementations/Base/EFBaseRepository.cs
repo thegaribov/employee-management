@@ -42,7 +42,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             var querySet = _dbTable.AsQueryable();
 
             //Predicate part
-            if (expression != null)
+            if (expression is not null)
                 querySet = querySet.Where(expression);
 
             //Search part

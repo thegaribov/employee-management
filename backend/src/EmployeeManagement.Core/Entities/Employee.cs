@@ -13,13 +13,12 @@ namespace EmployeeManagement.Core.Entities
     {
         public int Id { get; set; }
 
-        [Sortable, Searchable]
+        [Searchable]
         public string Name { get; set; }
 
-        [Sortable, Searchable]  
+        [Searchable]  
         public string Surname { get; set; }
 
-        [Sortable]
         public int DepartmentId { get; set; }
 
         public Department Department { get; set; }

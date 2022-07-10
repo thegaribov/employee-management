@@ -1,6 +1,7 @@
 using AutoMapper;
 using EmployeeManagement.API.Middlewares;
 using EmployeeManagement.Core.Extensions.ModelState;
+using EmployeeManagement.Core.Mappings;
 using EmployeeManagement.DataAccess.Persistance.Contexts;
 using EmployeeManagement.DataAccess.UnitOfWork.Abstracts;
 using EmployeeManagement.DataAccess.UnitOfWork.Implementations;
@@ -61,6 +62,19 @@ namespace EmployeeManagement.API
                         }
                     );
             });
+
+            #region Mappers
+
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new DepartmentServiceProfile());
+                mc.AddProfile(new EmployeeServiceProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            #endregion
 
             #endregion
 

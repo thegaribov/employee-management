@@ -12,7 +12,7 @@ namespace EmployeeManagement.Service.Business.Abstracts
 {
     public interface IDepartmentService
     {
-        Task<IEnumerable<DepartmentForCollectionDTO>> GetAllAsync(QueryParams queryParams);
+        Task<IEnumerable<DepartmentForCollectionDTO>> GetAllAsync(DepartmentsQueryParams queryParams);
         Task<DepartmentDetailsDTO> GetDetailsAsync(int id);
         Task<CreateDepartmentResponseDTO> CreateAsync(CreateDepartmentRequestDTO departmentDTO);
         Task UpdateAsync(int id, UpdateDepartmentDTO departmentDTO);

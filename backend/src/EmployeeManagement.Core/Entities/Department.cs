@@ -14,10 +14,9 @@ namespace EmployeeManagement.Core.Entities
     {
         public int Id { get; set; }
 
-        [Sortable, Searchable]
+        [Searchable]
         public string Name { get; set; }
 
-        [Sortable]
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 

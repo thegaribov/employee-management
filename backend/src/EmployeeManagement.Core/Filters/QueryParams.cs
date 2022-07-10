@@ -39,7 +39,6 @@ namespace EmployeeManagement.Core.Filters
             IntegrateRules();
         }
 
-
         private void IntegrateRules()
         {
             #region PageSize

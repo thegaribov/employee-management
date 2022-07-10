@@ -32,7 +32,7 @@ namespace EmployeeManagement.Service.Business.Implementations
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<DepartmentForCollectionDTO>> GetAllAsync(QueryParams queryParams)
+        public async Task<IEnumerable<DepartmentForCollectionDTO>> GetAllAsync(DepartmentsQueryParams queryParams)
         {
             var departments = await _unitOfWork.Departments.GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize);
 
