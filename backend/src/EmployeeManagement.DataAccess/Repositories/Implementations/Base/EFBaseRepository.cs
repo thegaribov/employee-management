@@ -58,7 +58,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             }
 
             //Pagination part
-            var paginator = new Page<TEntity>(querySet.OrderBy(o => o.Id), page.GetValueOrDefault(1), pageSize.GetValueOrDefault(10));
+            var paginator = new Page<TEntity>(querySet.OrderBy(o => o.Id), page, pageSize);
 
             //Sorting part
             if (!string.IsNullOrEmpty(sort))
@@ -71,16 +71,6 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
                 }
             }
 
-            paginator.Data = await paginator.QuerySet.ToListAsync();
-
-            return paginator;
-        }
-
-        public async virtual Task<Page<TEntity>> PaginateAsync(IQueryable<TEntity> query, int page, int pageSize)
-        {
-            var querySet = _dbTable.AsQueryable();
-
-            var paginator = new Page<TEntity>(querySet.OrderBy(o => o.Id), page, pageSize);
             paginator.Data = await paginator.QuerySet.ToListAsync();
 
             return paginator;
@@ -151,6 +141,16 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
         public virtual void Delete(TEntity data)
         {
             _dbTable.Remove(data);
+        }
+
+        public async Task<Page<TEntity>> GetAllPaginatedAsync(int page, int pageSize, Expression<Func<TEntity, bool>> expression = null)
+        {
+            var querySet = _dbTable.AsQueryable();
+
+            var paginator = new Page<TEntity>(querySet, page, pageSize);
+            paginator.Data = await paginator.QuerySet.ToListAsync();
+
+            return paginator;
         }
     }
 }
