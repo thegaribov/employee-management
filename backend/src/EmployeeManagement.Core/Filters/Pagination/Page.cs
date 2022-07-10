@@ -8,7 +8,7 @@ using EmployeeManagement.Core.Common;
 
 namespace EmployeeManagement.Core.Filters.Pagination
 {
-    public class Paginator<TEntity> : BasePaginator
+    public class Page<TEntity> : BasePage
         where TEntity : class, new()
     {
         [JsonIgnore]
@@ -17,7 +17,7 @@ namespace EmployeeManagement.Core.Filters.Pagination
         [JsonIgnore]
         public IEnumerable<TEntity> Data { get; set; }
 
-        public Paginator(IQueryable<TEntity> query, int page, int pageSize)
+        public Page(IQueryable<TEntity> query, int page, int pageSize)
             : base(page, pageSize, query.Count())
         {
             var skipCount = CalculateSkipCount(CurrentPage, PageSize);

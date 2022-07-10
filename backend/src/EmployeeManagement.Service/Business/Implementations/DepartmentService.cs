@@ -34,7 +34,10 @@ namespace EmployeeManagement.Service.Business.Implementations
 
         public async Task<IEnumerable<DepartmentForCollectionDTO>> GetAllAsync(DepartmentsQueryParams queryParams)
         {
-            var departments = await _unitOfWork.Departments.GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize);
+            string[] searchablePropertyNames = { "Name" };
+
+            var departments = await _unitOfWork.Departments
+                .GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize, searchablePropertyNames);
 
             _httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.XPagination, departments.ToJson());
 
@@ -83,8 +86,10 @@ namespace EmployeeManagement.Service.Business.Implementations
 
         public async Task<IEnumerable<EmployeeForCollectionDTO>> GetEmployeesAsync(int departmentId, QueryParams queryParams)
         {
+            string[] searchablePropertyNames = { "Name", "Surname" };
+
             var employees = await _unitOfWork.Employees
-                .GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize, e => e.DepartmentId == departmentId);
+                .GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize, searchablePropertyNames, e => e.DepartmentId == departmentId);
 
             _httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.XPagination, employees.ToJson());
 

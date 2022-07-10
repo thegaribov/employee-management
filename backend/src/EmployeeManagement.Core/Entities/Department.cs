@@ -13,8 +13,6 @@ namespace EmployeeManagement.Core.Entities
     public class Department : IEntity<int>, ICreatedAt, IUpdatedAt
     {
         public int Id { get; set; }
-
-        [Searchable]
         public string Name { get; set; }
 
         public DateTime CreatedAt { get; set; }

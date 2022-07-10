@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Core.Filters.Pagination
 {
-    public abstract class BasePaginator
+    public abstract class BasePage
     {
-        public static int[] AllowedPageSizes { get => new int[] { 5, 10, 15, 25 }; }
-
         public bool IsPaginable { get; set; }
 
         public int PageSize { get; set; }
@@ -27,7 +25,7 @@ namespace EmployeeManagement.Core.Filters.Pagination
 
         public int TotalRecords { get; set; }
 
-        public BasePaginator(int page, int pageSize, int recordsCount)
+        public BasePage(int page, int pageSize, int recordsCount)
         {
             PageSize = pageSize;
             TotalRecords = recordsCount;

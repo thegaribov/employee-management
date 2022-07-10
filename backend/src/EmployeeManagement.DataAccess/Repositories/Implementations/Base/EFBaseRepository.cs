@@ -19,6 +19,8 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
         where TEntity : class, IEntity<TKey>, new()
     {
         protected readonly EmployeeManagementContext _dbContext;
+        protected readonly Sorter _sorter = new Sorter();
+        protected readonly Searcher<TEntity, TKey> _searcher = new Searcher<TEntity, TKey>();
         private readonly DbSet<TEntity> _dbTable;
 
         public EFBaseRepository(EmployeeManagementContext dbContext)
@@ -37,19 +39,17 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             return await querySet.ToListAsync();
         }
 
-        public async virtual Task<Paginator<TEntity>> GetAllSearchedPaginatedSortedAsync(string query, string sort, int? page, int? pageSize, Expression<Func<TEntity, bool>> expression = null)
+        public async virtual Task<Page<TEntity>> GetAllSearchedPaginatedSortedAsync(string query, string sort, int? page, int? pageSize, string[] searchablePropertyNames, Expression<Func<TEntity, bool>> expression = null)
         {
             var querySet = _dbTable.AsQueryable();
 
-            //Predicate part
             if (expression is not null)
                 querySet = querySet.Where(expression);
 
             //Search part
             if (!string.IsNullOrEmpty(query))
             {
-                var searcher = new Searcher<TEntity, TKey>();
-                var sortQuery = searcher.GetQuery(query);
+                var sortQuery = _searcher.GetQuery(query, searchablePropertyNames);
 
                 if (!string.IsNullOrEmpty(sortQuery))
                 {
@@ -58,13 +58,12 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             }
 
             //Pagination part
-            var paginator = new Paginator<TEntity>(querySet.OrderBy(o => o.Id), page.GetValueOrDefault(1), pageSize.GetValueOrDefault(10));
+            var paginator = new Page<TEntity>(querySet.OrderBy(o => o.Id), page.GetValueOrDefault(1), pageSize.GetValueOrDefault(10));
 
             //Sorting part
             if (!string.IsNullOrEmpty(sort))
             {
-                var sorter = new Sorter<TEntity, TKey>();
-                var sortQuery = sorter.GetQuery(sort);
+                var sortQuery = _sorter.GetQuery(sort);
 
                 if (!string.IsNullOrEmpty(sortQuery))
                 {
@@ -72,21 +71,16 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
                 }
             }
 
-            var queryResult = paginator.QuerySet.ToQueryString();
             paginator.Data = await paginator.QuerySet.ToListAsync();
-     
+
             return paginator;
         }
 
-        public async virtual Task<Paginator<TEntity>> GetAllPaginatedAsync(int page, int pageSize, Expression<Func<TEntity, bool>> expression = null)
+        public async virtual Task<Page<TEntity>> PaginateAsync(IQueryable<TEntity> query, int page, int pageSize)
         {
             var querySet = _dbTable.AsQueryable();
 
-            //Predicate part
-            if (expression != null)
-                querySet = querySet.Where(expression);
-
-            var paginator = new Paginator<TEntity>(querySet.OrderBy(o => o.Id), page, pageSize);
+            var paginator = new Page<TEntity>(querySet.OrderBy(o => o.Id), page, pageSize);
             paginator.Data = await paginator.QuerySet.ToListAsync();
 
             return paginator;
@@ -100,8 +94,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             if (expression != null)
                 querySet = querySet.Where(expression);
 
-            var sorter = new Sorter<TEntity, TKey>();
-            var sortQuery = sorter.GetQuery(query);
+            var sortQuery = _sorter.GetQuery(query);
 
             if (!string.IsNullOrEmpty(sortQuery))
             {
@@ -111,7 +104,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             return await GetAllAsync();
         }
 
-        public async virtual Task<List<TEntity>> GetAllSearchedAsync(string query, Expression<Func<TEntity, bool>> expression = null)
+        public async virtual Task<List<TEntity>> GetAllSearchedAsync(string query, string[] searchablePropertyNames, Expression<Func<TEntity, bool>> expression = null)
         {
             var querySet = _dbTable.AsQueryable();
 
@@ -119,8 +112,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             if (expression != null)
                 querySet = querySet.Where(expression);
 
-            var searcher = new Searcher<TEntity, TKey>();
-            var sortQuery = searcher.GetQuery(query);
+            var sortQuery = _searcher.GetQuery(query, searchablePropertyNames);
 
             if (!string.IsNullOrEmpty(sortQuery) && !string.IsNullOrEmpty(query))
             {
@@ -134,12 +126,12 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
         {
             return await _dbTable.FirstOrDefaultAsync(expression);
         }
-        
+
         public async virtual Task<TEntity> GetSingleOrDefaultAsync(Expression<Func<TEntity, bool>> expression)
         {
             return await _dbTable.SingleOrDefaultAsync(expression);
         }
-        
+
         public async virtual Task<TEntity> GetAsync(object id)
         {
             return await _dbTable.FindAsync(id);

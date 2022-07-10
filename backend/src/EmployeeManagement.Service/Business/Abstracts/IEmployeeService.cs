@@ -11,9 +11,9 @@ namespace EmployeeManagement.Service.Business.Abstracts
     public interface IEmployeeService
     {
         Task<List<Employee>> GetAllAsync();
-        Task<Paginator<Employee>> GetAllSearchedPaginatedSortedAsync(string query, string sort, int? page, int? pageSize);
+        Task<Page<Employee>> GetAllSearchedPaginatedSortedAsync(string query, string sort, int? page, int? pageSize);
         Task<List<Employee>> GetAllSearchedAsync(string query);
-        Task<Paginator<Employee>> GetAllPaginatedAsync(int page, int pageSize);
+        Task<Page<Employee>> GetAllPaginatedAsync(int page, int pageSize);
         Task<List<Employee>> GetAllSortedAsync(string query);
         Task<Employee> GetAsync(int id);
         Task CreateAsync(Employee employee);

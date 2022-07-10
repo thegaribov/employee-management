@@ -31,31 +31,4 @@ namespace EmployeeManagement.Core.Filters
         /// </summary>
         public string Sort { get; set; }
     }
-
-    public class QueryParamsValidator : AbstractValidator<QueryParams>
-    {
-        public QueryParamsValidator()
-        {
-            IntegrateRules();
-        }
-
-        private void IntegrateRules()
-        {
-            #region PageSize
-
-            RuleFor(queryParams => queryParams.PageSize)
-                .Cascade(CascadeMode.Stop)
-                .GreaterThan(0)
-                .Must(qp => BasePaginator.AllowedPageSizes.Contains(qp.Value))
-                .WithMessage($"Page sizes can be : {string.Join(", ", BasePaginator.AllowedPageSizes)}")
-                .When(qp => qp.PageSize != null);
-
-            RuleFor(qp => qp.Page)
-                .Cascade(CascadeMode.Stop)
-                .GreaterThan(0)
-                .When(qp => qp.Page != null);
-
-            #endregion
-        }
-    }
 }

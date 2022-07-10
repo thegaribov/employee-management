@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Core.Filters.Sorting
 {
-    public class Sorter<TEntity, TKey>
-         where TEntity : class, IEntity<TKey>, new()
+    public class Sorter
     {
         public string GetQuery(string query)
         {

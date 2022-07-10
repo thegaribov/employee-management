@@ -11,19 +11,9 @@ namespace EmployeeManagement.Core.Filters.Searching
     public class Searcher<TEntity, TKey>
          where TEntity : class, IEntity<TKey>, new()
     {
-        public IEnumerable<string> GetSearchablePropertyNames()
+        public string GetQuery(string query, string[] searchablePropertyNames)
         {
-            return typeof(TEntity)
-                .GetProperties()
-                .Where(p => p.GetCustomAttributes(typeof(SearchableAttribute), true).FirstOrDefault() != null)
-                .Select(x => x.Name);
-        }
-
-        public string GetQuery(string query)
-        {
-            var searchablePropertyNames = GetSearchablePropertyNames();
-
-            if (query != null && searchablePropertyNames.Any())
+            if (query is not null && searchablePropertyNames.Any())
             {
                 var expressions = new List<string>();
                 var concantenatePropertiesExpression = string.Join(" + \" \"  + ", searchablePropertyNames);
