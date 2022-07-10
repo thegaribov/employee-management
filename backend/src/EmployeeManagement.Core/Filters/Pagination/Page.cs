@@ -16,7 +16,7 @@ namespace EmployeeManagement.Core.Filters.Pagination
         public IQueryable<TEntity> QuerySet { get; set; }
 
         [JsonIgnore]
-        public IEnumerable<TEntity> Data { get; set; }
+        public IEnumerable<TEntity> Records { get; set; }
 
 
         public bool IsPaginable { get; private set; }
@@ -94,6 +94,6 @@ namespace EmployeeManagement.Core.Filters.Pagination
             return (currentPage - 1) * pageSize;
         }
 
-        public string ToJson() => JsonSerializer.Serialize(this);
+        public string PaginationInfo { get => JsonSerializer.Serialize(this); }
     }
 }
