@@ -9,6 +9,7 @@
 		<PackageReference Include="FluentValidation.AspNetCore" Version="10.3.6" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.14" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.19" />
 	</ItemGroup>
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>

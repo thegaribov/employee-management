@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace EmployeeManagement.Core.Filters.Searching
     public class Searcher<TEntity, TKey>
          where TEntity : class, IEntity<TKey>, new()
     {
-        public string GetQuery(string query, string[] searchablePropertyNames)
+        public IQueryable<TEntity> GetQuery(IQueryable<TEntity> querySet, string query, string[] searchablePropertyNames)
         {
             if (query is not null && searchablePropertyNames.Any())
             {
@@ -24,11 +25,15 @@ namespace EmployeeManagement.Core.Filters.Searching
                     expressions.Add($"({concantenatePropertiesExpression}).Contains(@{i})");
                 }
 
-                return string.Join(" and ", expressions);
+                string sortQuery = string.Join(" and ", expressions);
+
+                if (!string.IsNullOrEmpty(sortQuery))
+                {
+                    return querySet.Where(sortQuery, query.Split(" "));
+                }
             }
 
-
-            return String.Empty;
+            return querySet;
         }
     }
 }

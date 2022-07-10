@@ -94,6 +94,6 @@ namespace EmployeeManagement.Core.Filters.Pagination
             return (currentPage - 1) * pageSize;
         }
 
-        public string PaginationInfo { get => JsonSerializer.Serialize(this); }
+        public string GetPaginationInfo() => JsonSerializer.Serialize(this, new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
     }
 }

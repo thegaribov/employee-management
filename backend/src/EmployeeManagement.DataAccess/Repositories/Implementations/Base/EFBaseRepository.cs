@@ -47,15 +47,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
                 querySet = querySet.Where(expression);
 
             //Search part
-            if (!string.IsNullOrEmpty(query))
-            {
-                var sortQuery = _searcher.GetQuery(query, searchablePropertyNames);
-
-                if (!string.IsNullOrEmpty(sortQuery))
-                {
-                    querySet = querySet.Where(sortQuery, query.Split(" "));
-                }
-            }
+            querySet = _searcher.GetQuery(querySet, query, searchablePropertyNames);
 
             //Pagination part
             var paginator = new Page<TEntity>(querySet.OrderBy(o => o.Id), page, pageSize);
@@ -71,7 +63,9 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
                 }
             }
 
-            paginator.Data = await paginator.QuerySet.ToListAsync();
+            var result = paginator.QuerySet.ToQueryString();
+
+            paginator.Records = await paginator.QuerySet.ToListAsync();
 
             return paginator;
         }
@@ -102,14 +96,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             if (expression != null)
                 querySet = querySet.Where(expression);
 
-            var sortQuery = _searcher.GetQuery(query, searchablePropertyNames);
-
-            if (!string.IsNullOrEmpty(sortQuery) && !string.IsNullOrEmpty(query))
-            {
-                return await querySet.Where(sortQuery, query.Split(" ")).ToListAsync();
-            }
-
-            return await GetAllAsync(expression);
+            return await _searcher.GetQuery(querySet, query, searchablePropertyNames).ToListAsync();
         }
 
         public async virtual Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> expression)
@@ -148,7 +135,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             var querySet = _dbTable.AsQueryable();
 
             var paginator = new Page<TEntity>(querySet, page, pageSize);
-            paginator.Data = await paginator.QuerySet.ToListAsync();
+            paginator.Records = await paginator.QuerySet.ToListAsync();
 
             return paginator;
         }

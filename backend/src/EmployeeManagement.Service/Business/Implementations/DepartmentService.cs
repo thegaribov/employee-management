@@ -39,7 +39,7 @@ namespace EmployeeManagement.Service.Business.Implementations
             var departmentPaginator = await _unitOfWork.Departments
                 .GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize, searchablePropertyNames);
 
-            _httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.XPagination, departmentPaginator.PaginationInfo);
+            _httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.XPagination, departmentPaginator.GetPaginationInfo());
 
             return _mapper.Map<IEnumerable<DepartmentForCollectionDTO>>(departmentPaginator.Records);
         }
@@ -91,7 +91,7 @@ namespace EmployeeManagement.Service.Business.Implementations
             var employeePaginator = await _unitOfWork.Employees
                 .GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize, searchablePropertyNames, e => e.DepartmentId == departmentId);
 
-            _httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.XPagination, employeePaginator.PaginationInfo);
+            _httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.XPagination, employeePaginator.GetPaginationInfo());
 
             return _mapper.Map<IEnumerable<EmployeeForCollectionDTO>>(employeePaginator.Records);
         }

@@ -70,13 +70,13 @@ namespace EmployeeManagement.API.Controllers.v1
         #endregion
 
         [HttpGet(Name = "employee-list")]
-        public async Task<IActionResult> List([FromQuery] QueryParams queryParams)
+        public async Task<IActionResult> List([FromQuery] EmployeesQueryParams queryParams)
         {
             var employees = await _employeeService.GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize);
 
-            Response.Headers.Add("X-Pagination", employees.ToJson());
+            Response.Headers.Add("X-Pagination", employees.GetPaginationInfo());
 
-            var model = _mapper.Map<IEnumerable<Employee>, List<EmployeeDTO>>(employees.Data);
+            var model = _mapper.Map<IEnumerable<Employee>, List<EmployeeDTO>>(employees.Records);
 
             return Ok(model);
         }

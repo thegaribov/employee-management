@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Core.DTOs.v1.Department
 {
-    public class DepartmentsQueryParams : QueryParams { }
+    public class EmployeesQueryParams : QueryParams { }
 
-    public class DepartmentsQueryParamsValidator : AbstractValidator<DepartmentsQueryParams>
+    public class EmployeesQueryParamsValidator : AbstractValidator<EmployeesQueryParams>
     {
         private readonly string[] _sortablePropertyNames;
         private readonly int[] _allowedPageSizes = { 5, 10, 15, 25 };
         private readonly Regex _regex;
 
-        public DepartmentsQueryParamsValidator()
+        public EmployeesQueryParamsValidator()
         {
-            _sortablePropertyNames = new string[] { "name", "createdAt"};
+            _sortablePropertyNames = new string[] { "name", "createdAt", "department.name", "department.createdAt" };
             _regex = GetSortingRegex();
 
             IntegrateRules();
