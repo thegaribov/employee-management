@@ -34,7 +34,7 @@ namespace EmployeeManagement.Service.Business.Implementations
 
         public async Task<IEnumerable<DepartmentForCollectionDTO>> GetAllAsync(DepartmentsQueryParams queryParams)
         {
-            string[] searchablePropertyNames = { "Name" };
+            string[] searchablePropertyNames = { "name" };
 
             var departmentPaginator = await _unitOfWork.Departments
                 .GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize, searchablePropertyNames);

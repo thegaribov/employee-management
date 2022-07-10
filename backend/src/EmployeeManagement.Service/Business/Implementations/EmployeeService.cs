@@ -22,7 +22,7 @@ namespace EmployeeManagement.Service.Business.Implementations
 
         public async Task<Page<Employee>> GetAllSearchedPaginatedSortedAsync(string query, string sort, int? page, int? pageSize)
         {
-            string[] searchablePropertyNames = { "Name", "Surname" };
+            string[] searchablePropertyNames = { "name", "surname", "age", "departmentId", "monthlyPayment" };
 
             return await _unitOfWork.Employees.GetAllSearchedPaginatedSortedAsync(query, sort, page, pageSize, searchablePropertyNames);
         }
@@ -35,11 +35,6 @@ namespace EmployeeManagement.Service.Business.Implementations
         public async Task<List<Employee>> GetAllSortedAsync(string query)
         {
             return await _unitOfWork.Employees.GetAllSortedAsync(query);
-        }
-
-        public async Task<List<Employee>> GetAllSearchedAsync(string query)
-        {
-            return await _unitOfWork.Employees.GetAllSearchedAsync(query);
         }
 
         public async Task<Employee> GetAsync(int id)

@@ -24,6 +24,12 @@ namespace EmployeeManagement.Core.DTOs.v1.Employee
         public string Surname { get; set; }
 
         /// <summary>
+        /// Employee age
+        /// </summary>
+        public int Age { get; set; }
+        public int MonthlyPayment { get; set; }
+
+        /// <summary>
         /// Related department id
         /// </summary>
         public int DepartmentId { get; set; }

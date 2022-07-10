@@ -12,7 +12,6 @@ namespace EmployeeManagement.Service.Business.Abstracts
     {
         Task<List<Employee>> GetAllAsync();
         Task<Page<Employee>> GetAllSearchedPaginatedSortedAsync(string query, string sort, int? page, int? pageSize);
-        Task<List<Employee>> GetAllSearchedAsync(string query);
         Task<Page<Employee>> GetAllPaginatedAsync(int page, int pageSize);
         Task<List<Employee>> GetAllSortedAsync(string query);
         Task<Employee> GetAsync(int id);
