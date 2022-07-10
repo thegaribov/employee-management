@@ -15,6 +15,7 @@ namespace EmployeeManagement.Core.Entities
         public string Name { get; set; }
         public string Surname { get; set; }
         public int Age { get; set; }
+        public decimal MonthlyPayment { get; set; }
 
         public int DepartmentId { get; set; }
 

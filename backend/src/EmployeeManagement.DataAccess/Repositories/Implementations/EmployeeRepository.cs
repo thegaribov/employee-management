@@ -21,34 +21,6 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations
         {
 
         }
-
-        public async virtual Task<List<Employee>> GetAllSearchedAsync(string query)
-        {
-            if (string.IsNullOrEmpty(query))
-            {
-                return await GetAllAsync();
-            }
-
-            var propertyNames = typeof(Employee)
-                .GetProperties()
-                .Where(p => p.GetCustomAttributes(typeof(SearchableAttribute), true).FirstOrDefault() != null)
-                .Select(x => x.Name);
-
-            var result = string.Join(" + \" \"  + ", propertyNames);
-
-            var expressionList = new List<string>();
-            var queryList = query.Split(" ");
-
-            for (int i = 0; i < queryList.Length; i++)
-            {
-                expressionList.Add($"({result}).Contains(@{i})");
-            }
-
-            var expression = string.Join(" and ", expressionList);
-
-
-            return await _dbContext.Employees.Where(expression, query.Split(" ")).ToListAsync();
-        }
     }
 
 

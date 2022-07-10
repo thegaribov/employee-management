@@ -10,6 +10,6 @@ namespace EmployeeManagement.DataAccess.Repositories.Abstracts
 {
     public interface IEmployeeRepository : IBaseRepository<Employee, int>
     {
-        Task<List<Employee>> GetAllSearchedAsync(string query);
+
     }
 }
