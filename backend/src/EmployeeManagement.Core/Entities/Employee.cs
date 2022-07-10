@@ -12,12 +12,9 @@ namespace EmployeeManagement.Core.Entities
     public class Employee : IEntity<int>, ICreatedAt, IUpdatedAt
     {
         public int Id { get; set; }
-
-        [Searchable]
         public string Name { get; set; }
-
-        [Searchable]  
         public string Surname { get; set; }
+        public int Age { get; set; }
 
         public int DepartmentId { get; set; }
 
