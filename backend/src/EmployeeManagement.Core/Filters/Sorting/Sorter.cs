@@ -2,17 +2,29 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace EmployeeManagement.Core.Filters.Sorting
 {
-    public class Sorter
+    public class Sorter<TEntity, TKey>
+         where TEntity : class, IEntity<TKey>, new()
     {
-        public string GetQuery(string query)
+        public IQueryable<TEntity> GetQuery(IQueryable<TEntity> querySet, string query)
         {
-            return query.Replace("_", " ");
+            if (!string.IsNullOrEmpty(query))
+            {
+                var sortQuery = query.Replace("_", " ");
+
+                if (!string.IsNullOrEmpty(sortQuery))
+                {
+                    return querySet.OrderBy(sortQuery);
+                }
+            }
+
+            return querySet;
         }
     }
 }

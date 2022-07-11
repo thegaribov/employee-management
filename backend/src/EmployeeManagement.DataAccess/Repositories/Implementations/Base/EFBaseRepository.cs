@@ -19,7 +19,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
         where TEntity : class, IEntity<TKey>, new()
     {
         protected readonly EmployeeManagementContext _dbContext;
-        protected readonly Sorter _sorter = new Sorter();
+        protected readonly Sorter<TEntity, TKey> _sorter = new Sorter<TEntity, TKey>();
         protected readonly Searcher<TEntity, TKey> _searcher = new Searcher<TEntity, TKey>();
         private readonly DbSet<TEntity> _dbTable;
 
@@ -46,24 +46,9 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             if (expression is not null)
                 querySet = querySet.Where(expression);
 
-            //Search part
             querySet = _searcher.GetQuery(querySet, query, searchablePropertyNames);
-
-            //Pagination part
             var paginator = new Page<TEntity>(querySet.OrderBy(o => o.Id), page, pageSize);
-
-            //Sorting part
-            if (!string.IsNullOrEmpty(sort))
-            {
-                var sortQuery = _sorter.GetQuery(sort);
-
-                if (!string.IsNullOrEmpty(sortQuery))
-                {
-                    paginator.QuerySet = paginator.QuerySet.OrderBy(sortQuery);
-                }
-            }
-
-            var result = paginator.QuerySet.ToQueryString();
+            paginator.QuerySet = _sorter.GetQuery(querySet, sort);
 
             paginator.Records = await paginator.QuerySet.ToListAsync();
 
@@ -74,18 +59,10 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
         {
             var querySet = _dbTable.AsQueryable();
 
-            //Predicate part
             if (expression != null)
                 querySet = querySet.Where(expression);
 
-            var sortQuery = _sorter.GetQuery(query);
-
-            if (!string.IsNullOrEmpty(sortQuery))
-            {
-                return await querySet.OrderBy(sortQuery).ToListAsync();
-            }
-
-            return await GetAllAsync();
+            return await _sorter.GetQuery(querySet, query).ToListAsync();
         }
 
         public async virtual Task<List<TEntity>> GetAllSearchedAsync(string query, string[] searchablePropertyNames, Expression<Func<TEntity, bool>> expression = null)
