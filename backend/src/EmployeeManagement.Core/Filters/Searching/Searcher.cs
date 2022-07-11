@@ -18,21 +18,9 @@ namespace EmployeeManagement.Core.Filters.Searching
             if (query is not null && searchablePropertyNames.Any())
             {
                 var propertyNames = AppendToStringStatementToNumberTypes(searchablePropertyNames);
-                var expressions = new List<string>();
-                var concantenatePropertiesExpression = string.Join(" + \" \"  + ", propertyNames);
-                var queries = query.Split(" ");
-
-                for (int i = 0; i < queries.Length; i++)
-                {
-                    expressions.Add($"({concantenatePropertiesExpression}).Contains(@{i})");
-                }
-
-                string sortQuery = string.Join(" and ", expressions);
-
-                if (!string.IsNullOrEmpty(sortQuery))
-                {
-                    return querySet.Where(sortQuery, query.Split(" "));
-                }
+                var separatedSearchArguments = query.Split(" ");
+                var searchQuery = GenerateDynamicLinqQuery(propertyNames, separatedSearchArguments.Length);
+                return querySet.Where(searchQuery, separatedSearchArguments);
             }
 
             return querySet;
@@ -70,6 +58,17 @@ namespace EmployeeManagement.Core.Filters.Searching
 
             return propertyNames;
         }
-    
+
+        private string GenerateDynamicLinqQuery(List<string> propertyNames, int searchArgumentsLength)
+        {
+            var expressions = new List<string>();
+
+            for (int i = 0; i < searchArgumentsLength; i++)
+            {
+                expressions.Add($"({string.Join(" + \" \"  + ", propertyNames)}).Contains(@{i})");
+            }
+
+            return string.Join(" and ", expressions);
+        }
     }
 }
