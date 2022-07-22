@@ -20,11 +20,11 @@ namespace EmployeeManagement.Service.Business.Implementations
             return await _unitOfWork.Employees.GetAllAsync();
         }
 
-        public async Task<Page<Employee>> GetAllSearchedPaginatedSortedAsync(string query, string sort, int? page, int? pageSize)
+        public async Task<Page<Employee>> GetAllSearchedFilteredSortedPaginatedAsync(string search, string filter, string sort, int? page, int? pageSize)
         {
             string[] searchablePropertyNames = { "name", "surname", "age", "departmentId", "monthlyPayment" };
 
-            return await _unitOfWork.Employees.GetAllSearchedPaginatedSortedAsync(query, sort, page, pageSize, searchablePropertyNames);
+            return await _unitOfWork.Employees.GetAllSearchedFilteredSortedPaginatedAsync(search, filter, sort, page, pageSize, searchablePropertyNames);
         }
 
         public async Task<Page<Employee>> GetAllPaginatedAsync(int page, int pageSize)

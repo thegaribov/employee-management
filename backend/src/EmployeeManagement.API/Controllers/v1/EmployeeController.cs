@@ -72,7 +72,7 @@ namespace EmployeeManagement.API.Controllers.v1
         [HttpGet(Name = "employee-list")]
         public async Task<IActionResult> List([FromQuery] EmployeesQueryParams queryParams)
         {
-            var employees = await _employeeService.GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize);
+            var employees = await _employeeService.GetAllSearchedFilteredSortedPaginatedAsync(queryParams.Search, queryParams.Filter, queryParams.Sort, queryParams.Page, queryParams.PageSize);
 
             Response.Headers.Add("X-Pagination", employees.GetPaginationInfo());
 

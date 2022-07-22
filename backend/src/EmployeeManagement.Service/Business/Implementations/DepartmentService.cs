@@ -37,7 +37,7 @@ namespace EmployeeManagement.Service.Business.Implementations
             string[] searchablePropertyNames = { "name" };
 
             var departmentPaginator = await _unitOfWork.Departments
-                .GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize, searchablePropertyNames);
+                .GetAllSearchedFilteredSortedPaginatedAsync(queryParams.Search, queryParams.Filter, queryParams.Sort, queryParams.Page, queryParams.PageSize, searchablePropertyNames);
 
             _httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.XPagination, departmentPaginator.GetPaginationInfo());
 
@@ -89,7 +89,7 @@ namespace EmployeeManagement.Service.Business.Implementations
             string[] searchablePropertyNames = { "Name", "Surname" };
 
             var employeePaginator = await _unitOfWork.Employees
-                .GetAllSearchedPaginatedSortedAsync(queryParams.Query, queryParams.Sort, queryParams.Page, queryParams.PageSize, searchablePropertyNames, e => e.DepartmentId == departmentId);
+                .GetAllSearchedFilteredSortedPaginatedAsync(queryParams.Search, queryParams.Filter, queryParams.Sort, queryParams.Page, queryParams.PageSize, searchablePropertyNames, e => e.DepartmentId == departmentId);
 
             _httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.XPagination, employeePaginator.GetPaginationInfo());
 

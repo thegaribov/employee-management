@@ -13,7 +13,7 @@ namespace EmployeeManagement.DataAccess.Repositories.Abstracts.Base
         where TEntity : class, IEntity<TKey>, new()
     {
         Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> expression = null);
-        Task<Page<TEntity>> GetAllSearchedPaginatedSortedAsync(string query, string sort, int? page, int? pageSize, string[] searchablePropertyNames, Expression<Func<TEntity, bool>> expression = null);
+        Task<Page<TEntity>> GetAllSearchedFilteredSortedPaginatedAsync(string search, string filter, string sort, int? page, int? pageSize, string[] searchablePropertyNames, Expression<Func<TEntity, bool>> expression = null);
         Task<List<TEntity>> GetAllSearchedAsync(string query, string[] searchablePropertyNames, Expression<Func<TEntity, bool>> expression = null);
         Task<Page<TEntity>> GetAllPaginatedAsync(int page, int pageSize, Expression<Func<TEntity, bool>> expression = null);
         Task<List<TEntity>> GetAllSortedAsync(string query, Expression<Func<TEntity, bool>> expression = null);

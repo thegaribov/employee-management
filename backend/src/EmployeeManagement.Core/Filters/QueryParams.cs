@@ -12,6 +12,21 @@ namespace EmployeeManagement.Core.Filters
     public class QueryParams
     {
         /// <summary>
+        /// Search query
+        /// </summary>
+        public string Search { get; set; }
+
+        /// <summary>
+        /// Filter query
+        /// </summary>
+        public string Filter { get; set; }
+
+        /// <summary>
+        /// Sort query
+        /// </summary>
+        public string Sort { get; set; }
+
+        /// <summary>
         /// Page number to request
         /// </summary>
         public int? Page { get; set; }
@@ -20,15 +35,5 @@ namespace EmployeeManagement.Core.Filters
         /// Page size to request
         /// </summary>
         public int? PageSize { get; set; }
-
-        /// <summary>
-        /// Search query
-        /// </summary>
-        public string Query { get; set; }
-
-        /// <summary>
-        /// Sort query
-        /// </summary>
-        public string Sort { get; set; }
     }
 }

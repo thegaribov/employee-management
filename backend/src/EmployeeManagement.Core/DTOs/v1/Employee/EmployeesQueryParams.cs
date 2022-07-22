@@ -13,6 +13,7 @@ namespace EmployeeManagement.Core.DTOs.v1.Department
 
     public class EmployeesQueryParamsValidator : AbstractValidator<EmployeesQueryParams>
     {
+        private readonly Type _domainModelType = typeof(Core.Entities.Employee);
         private readonly string[] _sortablePropertyNames;
         private readonly int[] _allowedPageSizes = { 5, 10, 15, 25 };
         private readonly Regex _regex;

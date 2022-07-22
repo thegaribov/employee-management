@@ -39,16 +39,16 @@ namespace EmployeeManagement.DataAccess.Repositories.Implementations.Base
             return await querySet.ToListAsync();
         }
 
-        public async virtual Task<Page<TEntity>> GetAllSearchedPaginatedSortedAsync(string query, string sort, int? page, int? pageSize, string[] searchablePropertyNames, Expression<Func<TEntity, bool>> expression = null)
+        public async virtual Task<Page<TEntity>> GetAllSearchedFilteredSortedPaginatedAsync(string search, string filter, string sort, int? page, int? pageSize, string[] searchablePropertyNames, Expression<Func<TEntity, bool>> expression = null)
         {
             var querySet = _dbTable.AsQueryable();
 
             if (expression is not null)
                 querySet = querySet.Where(expression);
 
-            querySet = _searcher.GetQuery(querySet, query, searchablePropertyNames);
+            querySet = _searcher.GetQuery(querySet, search, searchablePropertyNames);
             var paginator = new Page<TEntity>(querySet.OrderBy(o => o.Id), page, pageSize);
-            paginator.QuerySet = _sorter.GetQuery(querySet, sort);
+            paginator.QuerySet = _sorter.GetQuery(paginator.QuerySet, sort);
 
             paginator.Records = await paginator.QuerySet.ToListAsync();
 
