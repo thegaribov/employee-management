@@ -63,19 +63,6 @@ namespace EmployeeManagement.API
                     );
             });
 
-            #region Mappers
-
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new DepartmentServiceProfile());
-                mc.AddProfile(new EmployeeServiceProfile());
-            });
-
-            IMapper mapper = mapperConfig.CreateMapper();
-            services.AddSingleton(mapper);
-
-            #endregion
-
             #endregion
 
             #region Routing configurations
@@ -97,7 +84,7 @@ namespace EmployeeManagement.API
 
 
             //Mappers
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies(), ServiceLifetime.Singleton);
 
             #endregion
 
