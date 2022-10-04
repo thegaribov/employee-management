@@ -1,7 +1,10 @@
 ﻿using EmployeeManagement.Core.Entities;
 using EmployeeManagement.Core.Filters.Pagination;
+using EmployeeManagement.DataAccess.Persistance.Contexts;
 using EmployeeManagement.DataAccess.UnitOfWork.Abstracts;
 using EmployeeManagement.Service.Business.Abstracts;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,55 +12,54 @@ namespace EmployeeManagement.Service.Business.Implementations
 {
     public class EmployeeService : IEmployeeService
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public EmployeeService(IUnitOfWork unitOfWork)
+        private readonly EmployeeManagementContext _dbContext;
+
+        public EmployeeService(EmployeeManagementContext dbContext)
         {
-            _unitOfWork = unitOfWork;
+            _dbContext = dbContext;
         }
 
         public async Task<List<Employee>> GetAllAsync()
         {
-            return await _unitOfWork.Employees.GetAllAsync();
+            return await _dbContext.Employees.ToListAsync();
         }
 
         public async Task<Page<Employee>> GetAllSearchedFilteredSortedPaginatedAsync(string search, string filter, string sort, int? page, int? pageSize)
         {
-            string[] searchablePropertyNames = { "name", "surname", "age", "departmentId", "monthlyPayment" };
-
-            return await _unitOfWork.Employees.GetAllSearchedFilteredSortedPaginatedAsync(search, filter, sort, page, pageSize, searchablePropertyNames);
+            throw new NotImplementedException();
         }
 
         public async Task<Page<Employee>> GetAllPaginatedAsync(int page, int pageSize)
         {
-            return await _unitOfWork.Employees.GetAllPaginatedAsync(page, pageSize);
+            throw new NotImplementedException();
         }
 
         public async Task<List<Employee>> GetAllSortedAsync(string query)
         {
-            return await _unitOfWork.Employees.GetAllSortedAsync(query);
+            throw new NotImplementedException();
         }
 
         public async Task<Employee> GetAsync(int id)
         {
-            return await _unitOfWork.Employees.GetAsync(id);
+            return await _dbContext.Employees.FindAsync(id);
         }
 
-        public async Task CreateAsync(Core.Entities.Employee ticket)
+        public async Task CreateAsync(Employee employee)
         {
-            await _unitOfWork.Employees.CreateAsync(ticket);
-            await _unitOfWork.CommitAsync();
+            await _dbContext.Employees.AddAsync(employee);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Core.Entities.Employee ticket)
+        public async Task UpdateAsync(Employee employee)
         {
-            _unitOfWork.Employees.Update(ticket);
-            await _unitOfWork.CommitAsync();
+            _dbContext.Employees.Update(employee);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Core.Entities.Employee ticket)
+        public async Task DeleteAsync(Employee employee)
         {
-            _unitOfWork.Employees.Delete(ticket);
-            await _unitOfWork.CommitAsync();
+            _dbContext.Employees.Remove(employee);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
