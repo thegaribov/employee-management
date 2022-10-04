@@ -42,7 +42,8 @@ namespace EmployeeManagement.DataAccess.Persistance.Configurations
             builder
                .HasOne<Department>(employee => employee.Department)
                .WithMany(department => department.Employees)
-               .HasForeignKey(employee => employee.DepartmentId);
+               .HasForeignKey(employee => employee.DepartmentId)
+               .OnDelete(DeleteBehavior.NoAction);
 
             #endregion
 

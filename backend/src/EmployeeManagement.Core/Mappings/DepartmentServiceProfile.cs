@@ -13,6 +13,9 @@ namespace EmployeeManagement.Core.Mappings
     {
         public DepartmentServiceProfile()
         {
+            
+
+
             CreateMap<CreateDepartmentRequestDTO, Department>()
                 .ForMember(e => e.CreatedAt, o => o.Ignore())
                 .ForMember(e => e.UpdatedAt, o => o.Ignore());
@@ -28,7 +31,7 @@ namespace EmployeeManagement.Core.Mappings
             CreateMap<Department, DepartmentDetailsDTO>()
                 .ReverseMap();
 
-            
+
 
             CreateMap<Employee, EmployeeForCollectionDTO>();
 
