@@ -3,8 +3,6 @@ using EmployeeManagement.API.Middlewares;
 using EmployeeManagement.Core.Extensions.ModelState;
 using EmployeeManagement.Core.Mappings;
 using EmployeeManagement.DataAccess.Persistance.Contexts;
-using EmployeeManagement.DataAccess.UnitOfWork.Abstracts;
-using EmployeeManagement.DataAccess.UnitOfWork.Implementations;
 using EmployeeManagement.Service.Business.Abstracts;
 using EmployeeManagement.Service.Business.Implementations;
 using FluentValidation.AspNetCore;
@@ -73,9 +71,6 @@ namespace EmployeeManagement.API
             #endregion
 
             #region Services
-
-            //Unit of work
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
 
             //Business

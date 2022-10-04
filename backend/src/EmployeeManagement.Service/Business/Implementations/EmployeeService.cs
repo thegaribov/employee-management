@@ -1,7 +1,6 @@
 ﻿using EmployeeManagement.Core.Entities;
 using EmployeeManagement.Core.Filters.Pagination;
 using EmployeeManagement.DataAccess.Persistance.Contexts;
-using EmployeeManagement.DataAccess.UnitOfWork.Abstracts;
 using EmployeeManagement.Service.Business.Abstracts;
 using Microsoft.EntityFrameworkCore;
 using System;
