@@ -1,14 +1,14 @@
-﻿using EmployeeManagement.Core.Entities;
+﻿using EmployeeManagement.Business.Business.Abstracts;
+using EmployeeManagement.Core.Entities;
 using EmployeeManagement.Core.Filters.Pagination;
 using EmployeeManagement.DataAccess.Persistance.Contexts;
-using EmployeeManagement.Service.Business.Abstracts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EmployeeManagement.Service.Business.Implementations
+namespace EmployeeManagement.Business.Business.Implementations
 {
     public class EmployeeService : IEmployeeService
     {
@@ -33,7 +33,7 @@ namespace EmployeeManagement.Service.Business.Implementations
             }
 
             cachedEmployees = _dbContext.Employees.ToList();
-            _cacheService.SetData<List<Employee>>("employees", cachedEmployees, DateTime.Now.AddMinutes(5));
+            _cacheService.SetData("employees", cachedEmployees, DateTime.Now.AddMinutes(5));
 
 
             return cachedEmployees;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmployeeManagement.Service.Business.Abstracts
+namespace EmployeeManagement.Business.Business.Abstracts
 {
     public interface ICacheService
     {

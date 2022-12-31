@@ -2,7 +2,6 @@
 using EmployeeManagement.Core.DTOs.v1.Department;
 using EmployeeManagement.Core.Entities;
 using EmployeeManagement.Core.Extensions.ModelState;
-using EmployeeManagement.Service.Business.Abstracts;
 using Mainwave.MimeTypes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +14,7 @@ using System.Net.Http.Headers;
 using EmployeeManagement.Core.Common;
 using System.ComponentModel.DataAnnotations;
 using EmployeeManagement.Core.Filters;
+using EmployeeManagement.Business.Business.Abstracts;
 
 namespace EmployeeManagement.API.Controllers.v1
 {

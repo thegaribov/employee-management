@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EmployeeManagement.Business.Business.Abstracts;
 using EmployeeManagement.Core.Common;
 using EmployeeManagement.Core.DTOs.v1.Department;
 using EmployeeManagement.Core.Entities;
@@ -6,7 +7,6 @@ using EmployeeManagement.Core.Exceptions;
 using EmployeeManagement.Core.Filters;
 using EmployeeManagement.Core.Filters.Pagination;
 using EmployeeManagement.DataAccess.Persistance.Contexts;
-using EmployeeManagement.Service.Business.Abstracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmployeeManagement.Service.Business.Implementations
+namespace EmployeeManagement.Business.Business.Implementations
 {
     public class DepartmentService : IDepartmentService
     {
@@ -73,7 +73,7 @@ namespace EmployeeManagement.Service.Business.Implementations
             var department = await _dbContext.Departments.FindAsync(id);
             if (department is null) throw new NotFoundException($"Department is not found with id {id}");
 
-            department = _mapper.Map<UpdateDepartmentDTO, Department>(departmentDTO, department);
+            department = _mapper.Map(departmentDTO, department);
 
             _dbContext.Departments.Update(department);
             await _dbContext.SaveChangesAsync();

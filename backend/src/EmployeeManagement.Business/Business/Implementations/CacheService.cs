@@ -1,4 +1,4 @@
-﻿using EmployeeManagement.Service.Business.Abstracts;
+﻿using EmployeeManagement.Business.Business.Abstracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Runtime.Caching;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmployeeManagement.Service.Business.Implementations
+namespace EmployeeManagement.Business.Business.Implementations
 {
     public class CacheService : ICacheService
     {
@@ -24,7 +24,7 @@ namespace EmployeeManagement.Service.Business.Implementations
                 throw;
             }
         }
-        
+
         public bool SetData<T>(string key, T value, DateTimeOffset expirationTime)
         {
             bool res = true;
@@ -42,7 +42,7 @@ namespace EmployeeManagement.Service.Business.Implementations
 
             return res;
         }
-        
+
         public object RemoveData(string key)
         {
             try

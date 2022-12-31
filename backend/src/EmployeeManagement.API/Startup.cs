@@ -1,10 +1,10 @@
 using AutoMapper;
 using EmployeeManagement.API.Middlewares;
+using EmployeeManagement.Business.Business.Abstracts;
+using EmployeeManagement.Business.Business.Implementations;
 using EmployeeManagement.Core.Extensions.ModelState;
 using EmployeeManagement.Core.Mappings;
 using EmployeeManagement.DataAccess.Persistance.Contexts;
-using EmployeeManagement.Service.Business.Abstracts;
-using EmployeeManagement.Service.Business.Implementations;
 using FluentValidation.AspNetCore;
 using MediatR;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
@@ -29,12 +29,12 @@ namespace EmployeeManagement.API
 {
     public class Startup
     {
-        public (string API, string Core, string DataAccess, string Service) AssemplyNames { get; set; }
+        public (string API, string Core, string DataAccess, string Business) AssemplyNames { get; set; }
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
         {
-            AssemplyNames = (API: "EmployeeManagement.API", Core: "EmployeeManagement.Core", DataAccess: "EmployeeManagement.DataAccess", Service: "EmployeeManagement.Service");
+            AssemplyNames = (API: "EmployeeManagement.API", Core: "EmployeeManagement.Core", DataAccess: "EmployeeManagement.DataAccess", Business : "EmployeeManagement.Business");
             Configuration = configuration;
         }
 

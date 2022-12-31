@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Core", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.DataAccess", "EmployeeManagement.DataAccess\EmployeeManagement.DataAccess.csproj", "{343001AE-4012-4CFC-83ED-F1A9E2C91D41}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Service", "EmployeeManagement.Service\EmployeeManagement.Service.csproj", "{74E2FC12-DB05-4746-B98E-751F1BF9246A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Business", "EmployeeManagement.Business\EmployeeManagement.Business.csproj", "{74E2FC12-DB05-4746-B98E-751F1BF9246A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
