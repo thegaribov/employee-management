@@ -6,6 +6,7 @@ using EmployeeManagement.DataAccess.Persistance.Contexts;
 using EmployeeManagement.Service.Business.Abstracts;
 using EmployeeManagement.Service.Business.Implementations;
 using FluentValidation.AspNetCore;
+using MediatR;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -47,6 +48,8 @@ namespace EmployeeManagement.API
                      options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
 
+            services.AddMediatR(typeof(Startup).Assembly);
+
             #region Database context
 
             services.AddDbContext<EmployeeManagementContext>(option =>
@@ -80,6 +83,9 @@ namespace EmployeeManagement.API
 
             //Mappers
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies(), ServiceLifetime.Singleton);
+
+            //infrastructre
+            services.AddScoped<ICacheService, CacheService>();
 
             #endregion
 

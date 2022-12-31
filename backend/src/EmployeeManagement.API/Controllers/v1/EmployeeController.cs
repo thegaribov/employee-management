@@ -6,6 +6,7 @@ using EmployeeManagement.Core.Extensions.ModelState;
 using EmployeeManagement.Core.Filters;
 using EmployeeManagement.Service.Business.Abstracts;
 using Mainwave.MimeTypes;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace EmployeeManagement.API.Controllers.v1
     {
         #region Fields
 
+        private readonly IMediator _mediator;
         private readonly IEmployeeService _employeeService;
         private readonly IDepartmentService _departmentService;
         private readonly IMapper _mapper;
@@ -32,10 +34,12 @@ namespace EmployeeManagement.API.Controllers.v1
         #region Ctor
 
         public EmployeeController(
+            IMediator mediator,
             IEmployeeService employeeService,
             IDepartmentService departmentService,
             IMapper mapper)
         {
+            _mediator = mediator;
             _employeeService = employeeService;
             _departmentService = departmentService;
             _mapper = mapper;
@@ -72,11 +76,14 @@ namespace EmployeeManagement.API.Controllers.v1
         [HttpGet(Name = "employee-list")]
         public async Task<IActionResult> List([FromQuery] EmployeesQueryParams queryParams)
         {
-            var employees = await _employeeService.GetAllSearchedFilteredSortedPaginatedAsync(queryParams.Search, queryParams.Filter, queryParams.Sort, queryParams.Page, queryParams.PageSize);
+            //_mediator.
 
-            Response.Headers.Add("X-Pagination", employees.GetPaginationInfo());
 
-            var model = _mapper.Map<IEnumerable<Employee>, List<EmployeeDTO>>(employees.Records);
+            //var employees = await _employeeService.GetAllSearchedFilteredSortedPaginatedAsync(queryParams.Search, queryParams.Filter, queryParams.Sort, queryParams.Page, queryParams.PageSize);
+
+            //Response.Headers.Add("X-Pagination", employees.GetPaginationInfo());
+
+            var model = _mapper.Map<IEnumerable<Employee>, List<EmployeeDTO>>(await _employeeService.GetAllAsync());
 
             return Ok(model);
         }

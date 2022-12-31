@@ -21,15 +21,18 @@ namespace EmployeeManagement.Service.Business.Implementations
     {
         private readonly EmployeeManagementContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ICacheService _cacheService;
         private readonly IMapper _mapper;
 
         public DepartmentService(
             EmployeeManagementContext dbContext,
             IHttpContextAccessor httpContextAccessor,
+            ICacheService cacheService,
             IMapper mapper)
         {
             _dbContext = dbContext;
             _httpContextAccessor = httpContextAccessor;
+            _cacheService = cacheService;
             _mapper = mapper;
         }
 
